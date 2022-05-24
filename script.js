@@ -82,8 +82,8 @@ class Game {
         this.update();
         ctx.fillStyle = this.color;
         this.shape(parent.context, this.realX, this.realY, this.width, this.height);
-      }
-    }
+      } // brb ok
+    }//You should get devdocs.io
   }
 
   hook(for_, hook) {
@@ -91,10 +91,10 @@ class Game {
     this.hooks[for_].push(hook)
   }
 
-  triggerHook(for_) {
+  triggerHook(for_, ...params) {
     if (this.hooks[for_])
       for (let i = 0; i < this.hooks[for_].length; i++)
-          this.hooks[for_]()
+          this.hooks[for_](...params)
   }
 
   start() {
