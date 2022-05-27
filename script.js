@@ -131,7 +131,7 @@ class Game {
                 parent.context.font = `${this.size}px ${this.font}`
                 if (this.background) {
                   parent.context.fillStyle = this.background
-                  parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), )
+                  parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size)
                 }
                 parent.context.fillStyle = this.color
                 parent.context.fillText(this.text, this.x, this.y)
@@ -146,6 +146,7 @@ class Game {
                 shape,
                 background,
                 radius,
+                collisions,
                 ...opts
             }) {
                 //Did I do the typeof right? yes
@@ -166,6 +167,7 @@ class Game {
                 this.visible = false;
                 this.realX = 0;
                 this.realY = 0;
+                this.checkCollisions = collisions || true;
                 this.id = Random.string(12) + this.name;
                 this.collisions = {};
                 this.events = {};
@@ -261,7 +263,7 @@ class Game {
                 */
                 for (let other of parent.things.filter(x => {
                   // Check if the object is not itself
-                  return x.id !== this.id
+                  return x.id !== this.id && x.checkCollisions
                 })) { // more down
                     let rectCollider = other.getCollider(); // I feel like we don't need this.
                     let rectCollider2 = this.getCollider(); // I feel like we don't need this.

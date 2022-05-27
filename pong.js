@@ -32,27 +32,35 @@ const ball = new game.Thing({
 })
 
 const scoreLeft = new game.Text({
-  text: "123",
-  background: "white",
-  x: game.width / 2,
+  text: "0",
+  background: "red",
+  x: game.width / 2 - 30,
   y: 60,
   size: 60,
-  align: "right"
+  align: "right",
+  color: "white"
 })
 const scoreRight = new game.Text({
-  text: "123",
-  background: "white",
-  x: game.width / 2 + 60,
+  text: "0",
+  background: "red",
+  x: game.width / 2 + 30,
   y: 60,
   size: 60,
-  align: "left"
+  align: "left",
+  color: "white"
 })
 
-new game.Thing({
-  y: -game.height / 2 + 60,
-  height: 60,
-  width:  20
-})
+for (let i = 0; i < Math.ceil(game.height / 10); i++) {
+  new game.Thing({
+    y: -game.height / 2 + i * 20,
+    height: 10,
+    width:  5,
+    background: "white",
+    collisions: false
+  })//good
+}
+// some lines in the middle like in the original
+
 //Changed from color to background, because color made it kinda confusing.
 ball.vel = {
   x: Random.choice([Random.range(-1, -.8), Random.range(.8, 1)])*300,
@@ -70,6 +78,12 @@ ball.when("moved", () => {
   }
   if (ball.right > game.width / 2 || ball.left < -game.width / 2) {
     ball.x = ball.y = 0;
+    if (ball.right > game.width / 2) { 
+      scoreRight.text++
+    }
+    else {
+      scoreLeft.text++
+    }
     ball.vel = {
       x: Random.choice([Random.range(-1, -.8), Random.range(.8, 1)])*300,
       y: Random.choice([Random.range(-1, -.8), Random.range(.8, 1)])*300
