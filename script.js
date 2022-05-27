@@ -131,7 +131,7 @@ class Game {
                 parent.context.font = `${this.size}px ${this.font}`
                 if (this.background) {
                   parent.context.fillStyle = this.background
-                  parent.context.fillRect(this.x, this.y)
+                  parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), )
                 }
                 parent.context.fillStyle = this.color
                 parent.context.fillText(this.text, this.x, this.y)
