@@ -1,3 +1,4 @@
+alert('HELLO')
 const game = new Game({
   canvas: "#canvas",
   background: "black",

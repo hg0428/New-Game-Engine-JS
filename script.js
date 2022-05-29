@@ -18,6 +18,7 @@ class Camera {
     constructor() {
         this.offsetX = 0;
         this.offsetY = 0;
+        this.zoom = 1;
         // We need to add camera rotation. and zooming
         //add methods for world to screen and vice versa
     }
@@ -75,7 +76,7 @@ class Game {
         this.FPS = 0;
         this.deltaTime = 0;
         this.background = opts.background || "white";
-        this.canvas = document.querySelector(opts.canvas || "canvas");
+        this.canvas = document.querySelector(opts.canvas || "#canvas");
         this.context = canvas.getContext("2d");
         this.canvas.width = opts.width || document.body.offsetWidth;
         this.canvas.height = opts.height || document.body.offsetHeight;
@@ -157,7 +158,17 @@ class Game {
                 this.name = opts.name || 'unidentified';
                 if (typeof shape == 'string')
                     shape = SHAPES[shape];
-                this.shape = shape || SHAPES.rect;
+                this.shape = shape || SHAPES.rect
+                this.internal_data = {
+                  width: width || radius * 2 || 20,
+                  height: height || radius * 2 || 20,
+                  x: x || 0,
+                  y: y || 0,
+                  top: this.y - 0.5 * this.height,
+                  left: this.x - 0.5 * this.width,
+                  bottom: this.y + 0.5 * this.height,
+                  right: this.x + 0.5 * this.width,
+                }
                 this.width = width || radius * 2 || 20;
                 this.height = height || radius * 2 || 20;
                 this.radius = radius || (width + height) / 2;
@@ -172,7 +183,6 @@ class Game {
                 this.realX = 0;
                 this.realY = 0;
                 this.checkCollisions = collisions || true;
-                this.id = Random.string(12) + this.name;
                 this.collisions = {};
                 this.events = {};
                 this.prevX = 0;
@@ -184,7 +194,10 @@ class Game {
 
                 parent.things.push(this);
             }
-
+            get id() {
+              delete this.id;
+              return this.id = Random.string(12) + this.name;
+            }
             delete(inst) {
               parent.things = parent.things.filter(x => x !== this);
               //delete this;
@@ -219,7 +232,7 @@ class Game {
                     this.collisions[other.id].push(cb)
                 } else {
                     for (let oth of other) {
-                        if (!this.collisions[oth.id]) this.collisions[oth.id] = []
+                        if (!this.collisions[oth.id]) this.collisions[oth.id] = [] //ERROR here?
                         this.collisions[oth.id].push(cb)
                     }
                 }
@@ -434,7 +447,19 @@ class Game {
             for (let i = 0; i < this.hooks[for_].length; i++)
                 this.hooks[for_][i](...params);
     }
-
+    getCurrentState() {
+      //finish later
+    }
+    saveState(id) {
+      //Save the current state of the game and everything in it to restore later.
+      //game.saveState(0)
+      //game.restoreState(0)
+      //finish later
+      this._states[id] = this.getCurrentState();
+    }
+    restoreState(id) {
+      //finish later
+    }
     start() {
         this.running = true;
         let elapsed = 0;
