@@ -96,9 +96,11 @@ class Game {
                 y,
                 size,
                 font,
-                align
+                align,
+                overhead,
             }) {
                 this.text = text
+                this.overhead = overhead || false;
                 this.color = color || "black"
                 this.background = background
                 this.width = width
@@ -118,7 +120,7 @@ class Game {
               //They could set thing.left, thing.right, etc and it would calculate everything else.
                 // well it would speed the engine up ig
               //I was thinking it would make it slightly slower?
-              //WHich is faster? a setter function and a getter function or  this.x=8 and recalculate it every time. true. Wanna add it?
+              //WHich is faster? a setter function and a getter function or  this.x=8 and recalculate it every time. true. Wanna add it?  
               //Yes, but think about how much easier it would be if the user could simply set any value on the Thing, and everything would automatically adjust.
               //No, if I do ball.left = 60, it will just break the program, because if in our update loop we updated that, it would loop and not work.
               //But, if it could be modifyied, that would make it so much easier instead of ball.x = ball.x - this.left.
@@ -147,9 +149,11 @@ class Game {
                 background,
                 radius,
                 collisions,
+                overhead,
                 ...opts
             }) {
                 //Did I do the typeof right? yes
+                this.overhead = overhead || false;
                 this.name = opts.name || 'unidentified';
                 if (typeof shape == 'string')
                     shape = SHAPES[shape];
@@ -179,6 +183,12 @@ class Game {
                 }
 
                 parent.things.push(this);
+            }
+
+            delete(inst) {
+              parent.things = parent.things.filter(x => x !== this);
+              //delete this;
+              //if (inst) delete inst;
             }
 
             getCollider() {
@@ -230,8 +240,12 @@ class Game {
                 this.left = this.x - this.width / 2;
                 this.bottom = this.y + this.height / 2;
                 this.right = this.x + this.width / 2;
-                this.realX = this.left + (canvas.width / 2) + parent.camera.offsetX;
-                this.realY = this.top + (canvas.height / 2) + parent.camera.offsetY;
+                this.realX = this.left + (canvas.width / 2);
+                this.realY = this.top + (canvas.height / 2);
+                if (!this.overhead) {
+                  this.realX += parent.camera.offsetX;
+                  this.realY += parent.camera.offsetY;
+                }
             }
 
             distanceTo(other) {
@@ -326,7 +340,7 @@ class Game {
                             }
                         }
                         if (this.collisions[other.id])
-                            this.collisions[other.id].forEach(cb => cb(axis, side));
+                            this.collisions[other.id].forEach(cb => cb(axis, side, this, other));
                     }
                     else {
                         /*
