@@ -1,4 +1,4 @@
-//alert('HELLO')
+document.onclick = function() {//alert('HELLO')
 const game = new Game({
   canvas: "#canvas",
   background: "black",
@@ -106,3 +106,4 @@ game.hook("gameloop", () => {
 })
 
 game.start();
+}
