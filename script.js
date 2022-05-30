@@ -516,8 +516,7 @@ class Game {
             for (let thing of self.things)
                 thing.draw(elapsed);
             for (let text of self.texts)
-                text.draw()
-
+                text.draw();
             window.requestAnimationFrame(gameLoop);
         }
 
