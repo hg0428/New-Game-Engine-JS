@@ -1,4 +1,4 @@
-document.onclick = function() {//alert('HELLO')
+
 const game = new Game({
   canvas: "#canvas",
   background: "black",
@@ -49,7 +49,7 @@ ball.collided(walls, (axis, side, b, w) => {
     b.vel.y = -b.vel.y
   else
     b.vel.x = -b.vel.x
-})
+});
 
 paddle.collided(ball, (axis, side) => {
   if (axis === "y")
@@ -99,11 +99,17 @@ game.hook("gameloop", () => {
           width: 28,
           height: 16,
           background: getColorFromY(y)
-        }))
+        }));
       }
     }
+    ball.collided(walls, (axis, side, b, w) => {
+      w.delete();
+      if (axis === "y")
+        b.vel.y = -b.vel.y
+      else
+        b.vel.x = -b.vel.x
+    });
   }
 })
 
 game.start();
-}

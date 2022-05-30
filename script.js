@@ -19,8 +19,15 @@ class Camera {
         this.offsetX = 0;
         this.offsetY = 0;
         this.zoom = 1;
+        this.rotation = 0;
         // We need to add camera rotation. and zooming
         //add methods for world to screen and vice versa
+    } 
+    rotateRad(rad) {
+      this.rotation += rad
+    }
+    rotateDeg(deg) {
+      this.rotation += deg * Math.PI / 180;
     }
 }
 
@@ -171,15 +178,6 @@ class Game {
                   right: (x || 0) + 0.5 * (width || radius * 2 || 20),
                 }
 				        this.id = Random.string(12) + this.name;
-                /*this.width = width || radius * 2 || 20;
-                this.height = height || radius * 2 || 20;
-                this.radius = radius || (width + height) / 2;
-                this.x = x || 0;
-                this.y = y || 0;
-                this.top = this.y - 0.5 * this.height;
-                this.left = this.x - 0.5 * this.width;
-                this.bottom = this.y + 0.5 * this.height;
-                this.right = this.x + 0.5 * this.width;*/
                 this.background = background || "green";
                 this.visible = false;
                 this.realX = 0;
@@ -251,6 +249,17 @@ class Game {
               this._data.height = val;
               this._data.top = this._data.y - val/2;
               this._data.bottom = this._data.y + val/2;
+            }
+            get radius() {
+              return this._data.radius;
+            } set radius(val) {
+              this._data.radius = val;
+              this._data.width = val * 2;
+              this._data.height = val * 2;
+              this._data.left = this._data.x - val;
+              this._data.right = this._data.x + val;
+              this._data.top = this._data.y - val;
+              this._data.bottom = this._data.y + val;
             }
           
             
@@ -337,8 +346,8 @@ class Game {
 
                 this.prevX = this.x;
                 this.prevY = this.y;
-                this.y += this.vel.y * parent.deltaTime;
-                this.x += this.vel.x * parent.deltaTime;
+                if (this.vel.y!=0) this.y += this.vel.y * parent.deltaTime;
+                if (this.vel.x!=0) this.x += this.vel.x * parent.deltaTime;
                 /*
                 Problems with our Collision Detection: 
                   1. Its very expensive to check every object against every other object even if they are a thousand pixels away. 
