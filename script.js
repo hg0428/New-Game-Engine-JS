@@ -83,8 +83,8 @@ class Game {
         this.FPS = 0;
         this.deltaTime = 0;
         this.background = opts.background || "white";
-        this.canvas = document.querySelector(opts.canvas || "#canvas");
-        this.context = canvas.getContext("2d");
+        this.canvas = document.querySelector(opts.canvas || "canvas");
+        this.context = this.canvas.getContext("2d");
         this.canvas.width = opts.width || document.body.offsetWidth;
         this.canvas.height = opts.height || document.body.offsetHeight;
         this.width = this.canvas.width;
@@ -191,7 +191,7 @@ class Game {
                     x: 0,
                     y: 0,
                 }
-
+                this.destination = null;
                 parent.things.push(this);
             }
             get x() {
@@ -322,8 +322,8 @@ class Game {
                 this.left = this.x - this.width / 2;
                 this.bottom = this.y + this.height / 2;
                 this.right = this.x + this.width / 2;
-                this.realX = this.left + (canvas.width / 2);
-                this.realY = this.top + (canvas.height / 2);
+                this.realX = this.left + (parent.width / 2);
+                this.realY = this.top + (parent.height / 2);
                 if (!this.overhead) {
                   this.realX += parent.camera.offsetX;
                   this.realY += parent.camera.offsetY;
@@ -424,72 +424,6 @@ class Game {
                         if (this.collisions[other.id])
                             this.collisions[other.id].forEach(cb => cb(axis, side, this, other));
                     }
-                    else {
-                        /*
-                        This can like stop it once but then it goes through
-
-                        const col = rectLineCollide(this, {
-                            x1: rectCollider.prevX,
-                            y1: rectCollider.prevY,
-                            x2: rectCollider.x,
-                            y2: rectCollider.y
-                        })
-
-                        I dont know i didnt think about that
-                        How would we handle it if both objects are moving at each other?
-                        Me either...
-                        Hmmm
-                        Collision detection is hard....
-                        yea
-                        Maybe we could switch to SAT...
-                        Or ditch 2d and make 1d. (like we did with 3d)
-                        my ide crashed ok
-                        ik, but it would be easier with the other parts.
-                        
-                        this would still happen with SAT cuz the objects are too fast
-                        Nah we keep it 2d
-                        I am stuck, I can't think of any thing else that we could do.ok, when you sit in a chair weird, its hard to type correctly
-                        WHat should we work on now?
-                        ColorSchemes, and more complex shapes?
-                        i think fonts should be drawn from top-left not from center
-                        ok i will finish fonts tho ok
-                        lets just ignore this problem for now and focus on other things
-                        fonts or sprites or animations
-
-                        if (!col.collision) continue;
-
-                        let axis, side;
-
-                        other.x = this.x;
-                        
-                        rectCollider = other.getCollider()
-                        if (rectCollide(rectCollider, rectCollider2)) {
-                            axis = "x";
-                            if (other.prevX < this.x) {
-                                other.x = this.x - t1HalfW - t2HalfW;
-                                side = "left";    
-                            }
-                            else {
-                                other.x = this.x + t1HalfW + t2HalfW;
-                                side = "right";
-                            }
-                        }
-                        else {
-                            axis = "y"
-                            if (other.prevY < this.y) {
-                                other.y = this.y - t1HalfH - t2HalfH;
-                                side = "top";
-                            }
-                            else {
-                                other.y = this.y + t1HalfH + t2HalfH;
-                                side = "bottom";
-                            }
-                        }
-                        
-                        if (this.collisions[other.id])
-                            this.collisions[other.id].forEach(cb => cb(axis, side));
-                        */
-                    }
                 }
             }
 
@@ -502,7 +436,35 @@ class Game {
                 parent.context.fillStyle = this.background;
 
                 this.shape(parent.context, this.realX, this.realY, this.width, this.height);
-            }
+                if (this.destination) {
+                  if ((this.destination[0] == '*' || this.destination[0] == this.x) && (this.destination[1] == '*' || this.destination[1] == this.y)) {
+                      this.destination = null;
+                      return;
+                  }
+                  let d = this.destination;
+                  if (d[0] != '*' && this.x + this.vel.x/1000 >= d[0] && this.vel.x > 0) {
+                      this.vel.x = 0;
+                      this.x = d[0];
+                  } else if (d[0] != '*' && this.x + this.vel.x/1000 <= d[0] && this.vel.x < 0) {
+                      this.vel.x = 0;
+                      this.x = d[0];
+                  }
+                  if (d[1] != '*' && this.y + this.vel.y/1000 >= d[1] && this.vel.y > 0) {
+                      this.vel.y = 0;
+                      this.y = d[1];
+                  } else if (d[1] != '*' && this.y + this.vel.y/1000 <= d[1] && this.vel.y < 0) {
+                      this.vel.y = 0;
+                      this.y = d[1];
+                  }
+                }
+            } 
+            to(x, y, speedX, speedY) {
+                this.destination = [x, y];
+                if (x > this.x) this.vel.x = speedX;
+                else this.vel.x = -speedX;
+                if (y > this.y) this.vel.y = speedY;
+                else this.vel.y = -speedY;
+            } 
         }
     }
 
@@ -562,5 +524,7 @@ class Game {
         window.requestAnimationFrame(gameLoop);
     }
 }
-
+/*THIS COMMIT WAS BY hg0428, just from a different device. Incudes: 
+Very important bug fixes
+.to() copied from my pong game.*/
 setInterval(() => FPSel.innerText = `FPS: ${game.FPS.toFixed(1)}`, 500);
