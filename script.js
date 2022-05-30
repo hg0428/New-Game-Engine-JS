@@ -159,17 +159,19 @@ class Game {
                 if (typeof shape == 'string')
                     shape = SHAPES[shape];
                 this.shape = shape || SHAPES.rect
-                this.internal_data = {
+                this._data = {
                   width: width || radius * 2 || 20,
                   height: height || radius * 2 || 20,
+                  radius: radius || (width + height) / 2,
                   x: x || 0,
                   y: y || 0,
-                  top: this.y - 0.5 * this.height,
-                  left: this.x - 0.5 * this.width,
-                  bottom: this.y + 0.5 * this.height,
-                  right: this.x + 0.5 * this.width,
+                  top: (y || 0) - 0.5 * (height || radius * 2 || 20),
+                  left: (x || 0) - 0.5 * (width || radius * 2 || 20),
+                  bottom: (y || 0) + 0.5 * (height || radius * 2 || 20),
+                  right: (x || 0) + 0.5 * (width || radius * 2 || 20),
                 }
-                this.width = width || radius * 2 || 20;
+				        this.id = Random.string(12) + this.name;
+                /*this.width = width || radius * 2 || 20;
                 this.height = height || radius * 2 || 20;
                 this.radius = radius || (width + height) / 2;
                 this.x = x || 0;
@@ -177,7 +179,7 @@ class Game {
                 this.top = this.y - 0.5 * this.height;
                 this.left = this.x - 0.5 * this.width;
                 this.bottom = this.y + 0.5 * this.height;
-                this.right = this.x + 0.5 * this.width;
+                this.right = this.x + 0.5 * this.width;*/
                 this.background = background || "green";
                 this.visible = false;
                 this.realX = 0;
@@ -194,11 +196,69 @@ class Game {
 
                 parent.things.push(this);
             }
-            get id() {
-              delete this.id;
-              return this.id = Random.string(12) + this.name;
+            get x() {
+              return this._data.x;
+            } set x(val) {
+              this._data.x = val;
+              this._data.left = val - this.width/2;
+              this._data.right = val + this.width/2;
             }
-            delete(inst) {
+            get y() {
+              return this._data.y;
+            } set y(val) {
+              this._data.y = val;
+              this._data.top = val - this.height/2;
+              this._data.bottom = val + this.height/2;
+            }
+            get left() {
+              return this._data.left;
+            } set left(val) {
+              this._data.left = val;
+              this._data.x = val + this.width/2;
+              this._data.right = val + this.width;
+            }
+            get top() {
+              return this._data.top;
+            } set top(val) {
+              this._data.top = val;
+              this._data.y = val + this.height/2;
+              this._data.bottom = val + this.height;
+            }
+            get right() {
+              return this._data.right;
+            } set right(val) {
+              this._data.right = val;
+              this._data.x = val - this.width/2;
+              this._data.left = val - this.width;
+            }
+            get bottom() {
+              return this._data.bottom;
+            } set bottom(val) {
+              this._data.bottom = val;
+              this._data.y = val - this.height/2;
+              this._data.top = val - this.height;
+            }
+            get width() {
+              return this._data.width;
+            } set width(val) {
+              this._data.width = val;
+              this._data.left = this._data.x - val/2;
+              this._data.right = this._data.x + val/2;
+            }
+            get height() {
+              return this._data.height;
+            } set height(val) {
+              this._data.height = val;
+              this._data.top = this._data.y - val/2;
+              this._data.bottom = this._data.y + val/2;
+            }
+          
+            
+            /*get id() {
+              delete this.id;
+              return 
+            }*/
+            delete() {
               parent.things = parent.things.filter(x => x !== this);
               //delete this;
               //if (inst) delete inst;
@@ -232,7 +292,7 @@ class Game {
                     this.collisions[other.id].push(cb)
                 } else {
                     for (let oth of other) {
-                        if (!this.collisions[oth.id]) this.collisions[oth.id] = [] //ERROR here?
+                        if (!this.collisions[oth.id]) this.collisions[oth.id] = []
                         this.collisions[oth.id].push(cb)
                     }
                 }
