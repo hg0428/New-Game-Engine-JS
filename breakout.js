@@ -30,27 +30,29 @@ function getColorFromY(y) {
   return ["#521ea7", "#383cdb", "#3e9642", "#ddaf04", "#d16534"][y]
 }
 
-let walls = []
-for (let y = 0; y < 5; y++) {
-  for (let x = -7; x < 7; x++) {
-    walls.push(new game.Thing({
-      x: x * 34,
-      y: y * 20 - game.height / 2 + 40,
-      width: 28,
-      height: 16,
-      background: getColorFromY(y)
-    }))
-  }
-}
-
-ball.collided(walls, (axis, side, b, w) => {
-  w.delete();
-  if (axis === "y")
-    b.vel.y = -b.vel.y
-  else
-    b.vel.x = -b.vel.x
-});
-
+function reset() {
+  walls = []
+    for (let y = 0; y < 5; y++) {
+      for (let x = -7; x < 7; x++) {
+        walls.push(new game.Thing({
+          x: x * 34,
+          y: y * 20 - game.height / 2 + 40,
+          width: 28,
+          height: 16,
+          background: getColorFromY(y)
+        }));
+      }
+    }
+    ball.collided(walls, (axis, side, b, w) => {
+      walls = walls.filter(x => x != w);
+      w.delete();
+      if (axis === "y")
+        b.vel.y = -b.vel.y
+      else
+        b.vel.x = -b.vel.x
+    });
+};
+reset();
 paddle.collided(ball, (axis, side) => {
   if (axis === "y")
     ball.vel.y = -ball.vel.y
@@ -90,25 +92,7 @@ game.hook("gameloop", () => {
       x: Random.range(-1, 1) * 200,
       y: 100,
     }
-    walls = []
-    for (let y = 0; y < 5; y++) {
-      for (let x = -7; x < 7; x++) {
-        walls.push(new game.Thing({
-          x: x * 34,
-          y: y * 20 - game.height / 2 + 40,
-          width: 28,
-          height: 16,
-          background: getColorFromY(y)
-        }));
-      }
-    }
-    ball.collided(walls, (axis, side, b, w) => {
-      w.delete();
-      if (axis === "y")
-        b.vel.y = -b.vel.y
-      else
-        b.vel.x = -b.vel.x
-    });
+    reset();
   }
 })
 

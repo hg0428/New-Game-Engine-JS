@@ -165,7 +165,7 @@ class Game {
                 this.name = opts.name || 'unidentified';
                 if (typeof shape == 'string')
                     shape = SHAPES[shape];
-                this.shape = shape || SHAPES.rect
+                this.shape = shape || SHAPES.rect;
                 this._data = {
                   width: width || radius * 2 || 20,
                   height: height || radius * 2 || 20,
@@ -530,4 +530,4 @@ class Game {
 /*THIS COMMIT WAS BY hg0428, just from a different device. Incudes: 
 Very important bug fixes
 .to() copied from my pong game.*/
-setInterval(() => FPSel.innerText = `FPS: ${game.FPS.toFixed(1)}`, 500);
+// setInterval(() => FPSel.innerText = `FPS: ${game.FPS.toFixed(1)}`, 500);
