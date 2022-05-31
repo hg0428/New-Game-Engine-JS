@@ -459,6 +459,10 @@ class Game {
                 }
             } 
             to(x, y, speedX, speedY) {
+                if (x == '*') speedX = 0;
+                else if (speedX == 0) x = '*'
+                if (y == '*') speedY = 0;
+                else if (speedY == 0) y = '*'
                 this.destination = [x, y];
                 if (x > this.x) this.vel.x = speedX;
                 else this.vel.x = -speedX;
