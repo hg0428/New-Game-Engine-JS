@@ -15,19 +15,25 @@ const SHAPES = {
     }
 }
 class Camera {
-    constructor() {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
         this.offsetX = 0;
         this.offsetY = 0;
         this.zoom = 1;
         this.rotation = 0;
+        this.centerOfRot = (0, 0);
         // We need to add camera rotation. and zooming
         //add methods for world to screen and vice versa
     } 
     rotateRad(rad) {
-      this.rotation += rad
+      this.rotation += rad;
     }
     rotateDeg(deg) {
       this.rotation += deg * Math.PI / 180;
+    }
+    setRotationCenter(x, y) {
+      this.centerOfRot = (x, y);
     }
 }
 
@@ -269,12 +275,14 @@ class Game {
             }*/
             delete() {
               parent.things = parent.things.filter(x => x !== this);
+              this.draw = ()=>null;
+              delete this.x, this.y, this.width, this.height, this.radius, this.left, this.right, this.top, this.bottom, this._data, this.triggerEvent;
               //delete this;
               //if (inst) delete inst;
             }
 
             getCollider() {
-                let rectCollider = {
+                /*let rectCollider = {
                     left: this.left,
                     top: this.top,
                     right: this.right,
@@ -293,6 +301,9 @@ class Game {
                 }
 
                 return rectCollider;
+                //Not needed rn
+                //Lets later implement something more advanced thatm can detect any shape, maybe SAT or something*/
+                return this;
             }
 
             collided(other, cb) {
@@ -516,7 +527,9 @@ class Game {
             for (let ev of KEYS.events.held) {
                 if (KEYS.pressed.has(ev.key)) ev.callback()
             }
-
+          //Implement camera rotation (text+thing), remember camera can not affect it if overhead is set to true.
+            //ctx.translate(camera.cen)
+            //ctx.rotate(45 * Math.PI / 180);
             for (let thing of self.things)
                 thing.draw(elapsed);
             for (let text of self.texts)
@@ -527,7 +540,6 @@ class Game {
         window.requestAnimationFrame(gameLoop);
     }
 }
-/*THIS COMMIT WAS BY hg0428, just from a different device. Incudes: 
-Very important bug fixes
+/*
 .to() copied from my pong game.*/
 // setInterval(() => FPSel.innerText = `FPS: ${game.FPS.toFixed(1)}`, 500);
