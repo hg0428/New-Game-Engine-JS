@@ -23,7 +23,7 @@ class Camera {
         this.zoom = 1;
         this.rotation = 0;
         this.centerOfRot = (0, 0);
-        // We need to add camera rotation. and zooming
+        // We need to add camera rotation and zooming
         //add methods for world to screen and vice versa
     } 
     rotateRad(rad) {
@@ -113,16 +113,16 @@ class Game {
                 align,
                 overhead,
             }) {
-                this.text = text
+                this.text = text;
                 this.overhead = overhead || false;
-                this.color = color || "black"
-                this.background = background
-                this.width = width
-                this.x = x || 0
-                this.y = y || 0
-                this.size = size || 20
-                this.font = font || "Arial"
-                this.align = align || "left"
+                this.color = color || "black";
+                this.background = background;
+                this.width = width;
+                this.x = x || 0;
+                this.y = y || 0;
+                this.size = size || 20;
+                this.font = font || "Arial";
+                this.align = align || "left";
                 parent.texts.push(this)
             }
 
@@ -512,7 +512,7 @@ class Game {
         let lastFrame = 0;
 
         const self = this;
-
+        console.log(self);
         function gameLoop(t) {
             self.triggerHook("gameloop");
             elapsed = t - lastFrame;
@@ -534,10 +534,13 @@ class Game {
                 thing.draw(elapsed);
             for (let text of self.texts)
                 text.draw();
-            window.requestAnimationFrame(gameLoop);
+            if (self.running) window.requestAnimationFrame(gameLoop);
         }
 
         window.requestAnimationFrame(gameLoop);
+    }
+    stop() {
+      this.running = false;
     }
 }
 /*

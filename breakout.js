@@ -96,4 +96,4 @@ game.hook("gameloop", () => {
   }
 })
 
-document.onclick = game.start;
+document.onclick = () => game.start();
