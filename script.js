@@ -301,8 +301,8 @@ class Game {
         }
 
         return rectCollider;
-        //Not needed rn
-        //Lets later implement something more advanced thatm can detect any shape, maybe SAT or something*/
+        //Not needed rn, but we will need it later on. Commented out to save power.
+        //Lets later implement something more advanced that can detect any shape, maybe SAT or something*/
         return this;
       }
 
@@ -329,10 +329,6 @@ class Game {
       }
 
       posUpdate() {
-        this.top = this.y - this.height / 2;
-        this.left = this.x - this.width / 2;
-        this.bottom = this.y + this.height / 2;
-        this.right = this.x + this.width / 2;
         this.realX = this.left + (parent.width / 2);
         this.realY = this.top + (parent.height / 2);
         if (!this.overhead) {
