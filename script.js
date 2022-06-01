@@ -468,6 +468,12 @@ class Game {
       teleport(x, y) {
         this.x = x;
         this.y = y;
+        this._data.x = val;
+        this._data.left = val - this.width / 2;
+        this._data.right = val + this.width / 2;
+        this._data.y = val;
+        this._data.top = val - this.height / 2;
+        this._data.bottom = val + this.height / 2;
         //optimize by calculating everything here and only setting _data.x, y
       }
       moveX(amt) {
