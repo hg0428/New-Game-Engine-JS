@@ -484,12 +484,12 @@ class Game {
         this._data.bottom += amt;
       }
       move(x, y) {
-        this._data.x += amt;
-        this._data.left += amt;
-        this._data.right += amt;
-        this._data.y += amt;
-        this._data.top += amt;
-        this._data.bottom += amt;
+        this._data.x += x;
+        this._data.left += x;
+        this._data.right += x;
+        this._data.y += y;
+        this._data.top += y;
+        this._data.bottom += y;
       }
       to(x, y, speedX, speedY) {
         if (x == '*') speedX = 0;
