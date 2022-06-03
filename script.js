@@ -85,12 +85,13 @@ class Game {
 
     this.camera = new Camera();
     this.things = [];
-    this.usedIDs = [];
     this.FPS = 0;
     this.deltaTime = 0;
+    this.timestamp = 0;
+    this.rendering = opts.rendering || '2d'
     this.background = opts.background || "white";
     this.canvas = document.querySelector(opts.canvas || "canvas");
-    this.context = this.canvas.getContext("2d");
+    this.context = this.canvas.getContext(this.rendering);
     this.canvas.width = opts.width || document.body.offsetWidth;
     this.canvas.height = opts.height || document.body.offsetHeight;
     this.width = this.canvas.width;
@@ -342,14 +343,6 @@ class Game {
       }
 
       update() {
-        /*
-        this.vel.x *= (parent.friction || 1);
-        this.vel.y *= (parent.friction || 1);
-
-        parent.context.lineWidth = 3
-        parent.context.strokeStyle = "green"
-        parent.context.strokeRect(rectCollider.x, rectCollider.y, rectCollider.width, rectCollider.height)
-        */
 
         this.prevX = this.x;
         this.prevY = this.y;
@@ -367,7 +360,7 @@ class Game {
         for (let other of parent.things.filter(x => {
           // Check if the object is not itself
           return x.id !== this.id && x.checkCollisions
-        })) { // more down
+        })) { 
           let rectCollider = other.getCollider(); // I feel like we don't need this.
           let rectCollider2 = this.getCollider(); // I feel like we don't need this.
 
@@ -384,12 +377,12 @@ class Game {
 
           // Only check objects that are in range
           if (
-            this.distanceTo(other) < rectCollider2.width +
+            this.distanceTo(other) < rectCollider2._data.width +
             rectCollider._data.width +
             rectCollider2._data.height +
             rectCollider._data.height &&
             rectCollide(rectCollider, rectCollider2)
-          ) {
+          ) {//Change ._data.etc to .etc when we change getCollider() again.
 
             // Calculate the distance between centers
             let diffX = this._data.x - other._data.x;
@@ -429,6 +422,14 @@ class Game {
               }
             }
             if (this.collisions[other.id])
+              //Maybe event
+              /*let event = {
+                axis:axis,
+                side:side,
+                self:this,
+                other:other,
+                timestamp: parent.timestamp
+              }*/
               this.collisions[other.id].forEach(cb => cb(axis, side, this, other));
           }
         }
@@ -539,6 +540,7 @@ class Game {
     const self = this;
     console.log(self);
     function gameLoop(t) {
+      self.timestamp = t;
       self.triggerHook("gameloop");
       elapsed = t - lastFrame;
       lastFrame = t;
