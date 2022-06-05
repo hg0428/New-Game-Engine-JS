@@ -85,6 +85,7 @@ class Game {
 
     this.camera = new Camera();
     this.things = [];
+    this.texts = [];
     this.FPS = 0;
     this.deltaTime = 0;
     this.timestamp = 0;
@@ -98,7 +99,6 @@ class Game {
     this.height = this.canvas.height;
     this.friction = opts.friction || 1;
     this.hooks = [];
-    this.texts = [];
     this.running = false;
     const parent = this;
     this.Text = class {
@@ -113,6 +113,7 @@ class Game {
         font,
         align,
         overhead,
+        ...opts
       }) {
         this.text = text;
         this.overhead = overhead || false;
@@ -121,7 +122,7 @@ class Game {
         this.width = width;
         this.x = x || 0;
         this.y = y || 0;
-        this.size = size || 20;
+        this.size = size || 16;
         this.font = font || "Arial";
         this.align = align || "left";
         parent.texts.push(this)
@@ -144,14 +145,14 @@ class Game {
         //And it would make it a lot more efficient than adding functions everywhere.
         // ima  finish fonts
         //ok, fine.ok
-        parent.context.textAlign = this.align
-        parent.context.font = `${this.size}px ${this.font}`
+        parent.context.textAlign = this.align;
+        parent.context.font = `${this.size}px ${this.font}`;
         if (this.background) {
-          parent.context.fillStyle = this.background
-          parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size)
+          parent.context.fillStyle = this.background;
+          parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size);
         }
-        parent.context.fillStyle = this.color
-        parent.context.fillText(this.text, this.x, this.y)
+        parent.context.fillStyle = this.color;
+        parent.context.fillText(this.text, this.x, this.y);
       }
     }
     this.Thing = class {
@@ -186,7 +187,7 @@ class Game {
         }
         this.id = Random.string(12) + this.name;
         this.background = background || "green";
-        this.visible = false;
+        //this.visible = false;
         this.realX = 0;
         this.realY = 0;
         this.checkCollisions = collisions || true;
@@ -359,9 +360,9 @@ class Game {
         for (let other of parent.things.filter(x => {
           // Check if the object is not itself
           return x.id !== this.id && x.checkCollisions
-        })) { 
-          let rectCollider = other.getCollider(); // I feel like we don't need this.
-          let rectCollider2 = this.getCollider(); // I feel like we don't need this.
+        })) { //if this thing checks another thing, and the other thing checks against this thing, than isn't that re-calculating the same thing? Its a waste of time. So, maybe later we can come up with a better system.
+          let rectCollider = other.getCollider();
+          let rectCollider2 = this.getCollider();
 
           // I only added the .getCollider() method because we can only check
           // collisions between rectangles for now, we can remove it once we 
@@ -537,7 +538,6 @@ class Game {
     let lastFrame = 0;
 
     const self = this;
-    console.log(self);
     function gameLoop(t) {
       self.timestamp = t;
       self.triggerHook("gameloop");
@@ -566,9 +566,8 @@ class Game {
     window.requestAnimationFrame(gameLoop);
   }
   stop() {
-    this.running = false;
+    if (this.running) this.running = false;
   }
 }
-/*
-.to() copied from my pong game.*/
+
 // setInterval(() => FPSel.innerText = `FPS: ${game.FPS.toFixed(1)}`, 500);
