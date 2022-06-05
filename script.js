@@ -167,7 +167,7 @@ class Game {
         overhead,
         ...opts
       }) {
-        //Did I do the typeof right? yes
+        //add something to auto keep a Thing within the viewport
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';
         if (typeof shape == 'string')
@@ -346,8 +346,7 @@ class Game {
 
         this.prevX = this.x;
         this.prevY = this.y;
-        if (this.vel.y != 0) this.y += this.vel.y * parent.deltaTime;
-        if (this.vel.x != 0) this.x += this.vel.x * parent.deltaTime;
+        this.move(this.vel.x * parent.deltaTime, this.vel.y * parent.deltaTime)
         /*
         Problems with our Collision Detection: 
           1. Its very expensive to check every object against every other object even if they are a thousand pixels away. 
