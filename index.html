@@ -9,8 +9,9 @@
   <script src="interface.js"></script>
   <script>
     (function () {
+      let activate = false;
       var src = '//cdn.jsdelivr.net/npm/eruda';
-      if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+      if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true' && !activate) return;
       document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
       document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
     })();//Ok, so, the game engine works great already, I made some bug fixes recently, like when we used canvas instead of this.canvas, and some other minor things that broke the entire program. //
