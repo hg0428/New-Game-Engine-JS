@@ -161,6 +161,10 @@ class Game {
         height,
         x,
         y,
+        left,
+        right,
+        top,
+        bottom,
         shape,
         background,
         radius,
@@ -174,16 +178,33 @@ class Game {
         if (typeof shape == 'string')
           shape = SHAPES[shape];
         this.shape = shape || SHAPES.rect;
+        
+        //better calculate options. If left and right are supplied, you can calculate width
+        //same for top/bottom
+        //and also calculate x, and y from those.
+        //or if left and width are supplied, you can get x
+        //etc...
+        //add all that stuff.
+        //and check to make sure the values are not invalid
+        width = width || radius * 2 || 20;
+        height = height || radius * 2 || 20;
+        radius = radius || (width + height) / 4 || 10;
+        x = x || (left + this.width/2) || (right - this.width/2) || 0;
+        y = y || (top + this.height/2) || (bottom - this.height/2) || 0;
+        top = top || this.y - this.height/2;
+        left = left || this.x - this.width/2;
+        bottom = bottom || this.y + this.height/2;
+        right = right || this.x + this.width/2;
         this._data = {
-          width: width || radius * 2 || 20,
-          height: height || radius * 2 || 20,
-          radius: radius || (width + height) / 4 || 10,
-          x: x || 0,
-          y: y || 0,
-          top: (y || 0) - 0.5 * (height || radius * 2 || 20),
-          left: (x || 0) - 0.5 * (width || radius * 2 || 20),
-          bottom: (y || 0) + 0.5 * (height || radius * 2 || 20),
-          right: (x || 0) + 0.5 * (width || radius * 2 || 20),
+          width: width,
+          height: height,
+          radius: radius,
+          x: x,
+          y: y,
+          top: top,
+          left: left,
+          bottom: bottom,
+          right: right,
         }
         this.id = Random.string(12) + this.name;
         this.background = background || "green";
@@ -530,6 +551,9 @@ class Game {
   }
   restoreState(id) {
     //finish later
+  }
+  getDistance() {
+    
   }
   start() {
     if (this.running) return;
