@@ -89,7 +89,8 @@ class Game {
     this.FPS = 0;
     this.deltaTime = 0;
     this.timestamp = 0;
-    this.rendering = opts.rendering || '2d'
+    this.viewmode = opts.viewmode || '2d'; //1d, 2d, isometric, 3d
+    this.rendering = opts.rendering || '2d'; //if we add webgl support
     this.background = opts.background || "white";
     this.canvas = document.querySelector(opts.canvas || "canvas");
     this.context = this.canvas.getContext(this.rendering);
@@ -97,6 +98,10 @@ class Game {
     this.canvas.height = opts.height || document.body.offsetHeight;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.left = -this.width / 2;
+    this.right = this.width / 2;
+    this.top = -this.height / 2;
+    this.bottom = this.height / 2;
     this.friction = opts.friction || 1;
     this.hooks = [];
     this.running = false;
@@ -125,7 +130,7 @@ class Game {
         this.size = size || 16;
         this.font = font || "Arial";
         this.align = align || "left";
-        parent.texts.push(this)
+        parent.texts.push(this);
       }
 
       draw() {
@@ -178,7 +183,7 @@ class Game {
         if (typeof shape == 'string')
           shape = SHAPES[shape];
         this.shape = shape || SHAPES.rect;
-        
+
         //better calculate options. If left and right are supplied, you can calculate width
         //same for top/bottom
         //and also calculate x, and y from those.
@@ -189,12 +194,12 @@ class Game {
         width = width || radius * 2 || 20;
         height = height || radius * 2 || 20;
         radius = radius || (width + height) / 4 || 10;
-        x = x || (left + this.width/2) || (right - this.width/2) || 0;
-        y = y || (top + this.height/2) || (bottom - this.height/2) || 0;
-        top = top || this.y - this.height/2;
-        left = left || this.x - this.width/2;
-        bottom = bottom || this.y + this.height/2;
-        right = right || this.x + this.width/2;
+        x = x || (left + width / 2) || (right - width / 2) || 0;
+        y = y || (top + height / 2) || (bottom - height / 2) || 0;
+        top = top || y - height / 2;
+        left = left || x - width / 2;
+        bottom = bottom || y + height / 2;
+        right = right || x + width / 2;
         this._data = {
           width: width,
           height: height,
@@ -219,8 +224,9 @@ class Game {
         this.vel = {
           x: 0,
           y: 0,
+          //add rotational velocity? (my old engine had it.)
         }
-        this.destination = null;
+        this._destination = null;
         parent.things.push(this);
       }
       get x() {
@@ -465,12 +471,12 @@ class Game {
         parent.context.fillStyle = this.background;
 
         this.shape(parent.context, this.realX, this.realY, this._data.width, this._data.height);
-        if (this.destination) {
-          if ((this.destination[0] == '*' || this.destination[0] == this._data.x) && (this.destination[1] == '*' || this.destination[1] == this._data.y)) {
-            this.destination = null;
+        if (this._destination) {
+          if ((this._destination[0] == '*' || this._destination[0] == this._data.x) && (this._destination[1] == '*' || this._destination[1] == this._data.y)) {
+            this._destination = null;
             return;
           }
-          let d = this.destination;
+          let d = this._destination;
           if (d[0] != '*' && this._data.x + this.vel.x / 1000 >= d[0] && this.vel.x > 0) {
             this.vel.x = 0;
             this.x = d[0];
@@ -519,7 +525,7 @@ class Game {
         if (y == '*') speedY = 0;
         else if (speedY == 0) y = '*'
 
-        this.destination = [x, y];
+        this._destination = [x, y];
 
         if (x > this._data.x) this.vel.x = speedX;
         else this.vel.x = -speedX;
@@ -553,7 +559,7 @@ class Game {
     //finish later
   }
   getDistance() {
-    
+
   }
   start() {
     if (this.running) return;

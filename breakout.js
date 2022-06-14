@@ -57,12 +57,18 @@ paddle.collided(ball, (axis, side) => {
 });
 
 game.hook("gameloop", () => {
-  if (KEYS.pressed.has("a") && paddle.left > -game.width/2) {
+  if (KEYS.pressed.has("a") && paddle.left > -game.width / 2) {
     paddle.vel.x = - 300;
-  } if (KEYS.pressed.has("d") && paddle.right < game.width/2) {
+  } if (KEYS.pressed.has("d") && paddle.right < game.width / 2) {
     paddle.vel.x = 300;
-  } else if (!KEYS.pressed.has("a") || paddle.left <= -game.width/2) {
+  } else if (!KEYS.pressed.has("a")) {
     paddle.vel.x = 0;
+  } if (paddle.vel.x != 0 && paddle.left < -game.width / 2) {
+    paddle.vel.x = 0;
+    paddle.left = -game.width / 2;
+  } if (paddle.vel.x != 0 && paddle.right > game.width / 2) {
+    paddle.vel.x = 0;
+    paddle.right = game.width / 2;
   }
   if (ball.left <= -game.width / 2) {
     ball.vel.x = -ball.vel.x
