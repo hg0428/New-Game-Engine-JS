@@ -1,79 +1,104 @@
 let programStart = Date.now();
- 
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||  window.msRequestAnimationFrame || function(funct) {
-  if((Date.now()-programStart)-lastFrame >= 60 ) {
-      lastFrame = Date.now()-programStart;
-	    funct(lastFrame);
+
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(funct) {
+  if ((Date.now() - programStart) - lastFrame >= 60) {
+    lastFrame = Date.now() - programStart;
+    funct(lastFrame);
   } else {
-      setTimeout(window.requestAnimationFrame, 59-((Date.now()-programStart)-lastFrame), funct); 
+    setTimeout(window.requestAnimationFrame, 59 - ((Date.now() - programStart) - lastFrame), funct);
   }
 };
 var KEYS = {
-    pressed: new Set(),
-    events: {
-      held: [],
-      pressed: [],
-      released: []
-    },
-    bindKeyHold: (keys, cb) => {
-      if (Array.isArray(keys))      
-        for (let key of keys)
-          KEYS.events.held.push({
-            key: key,
-            callback: cb
-          })
-      else
+  pressed: new Set(),
+  events: {
+    held: [],
+    pressed: [],
+    released: []
+  },
+  bindKeyHold: (keys, cb) => {
+    if (Array.isArray(keys))
+      for (let key of keys)
         KEYS.events.held.push({
-          key: keys,
+          key: key,
           callback: cb
         })
-    },
-    bindKeyPressed: (keys, cb) => {
-      if (Array.isArray(keys))      
-        for (let key of keys)
-          KEYS.events.pressed.push({
-            key: key,
-            callback: cb
-          })
-      else
+    else
+      KEYS.events.held.push({
+        key: keys,
+        callback: cb
+      })
+  },
+  bindKeyPressed: (keys, cb) => {
+    if (Array.isArray(keys))
+      for (let key of keys)
         KEYS.events.pressed.push({
-          key: keys,
+          key: key,
           callback: cb
         })
-    },
-    bindKeyReleased: (keys, cb) => {
-      if (Array.isArray(keys))      
-        for (let key of keys)
-          KEYS.events.released.push({
-            key: key,
-            callback: cb
-          })
-      else
+    else
+      KEYS.events.pressed.push({
+        key: keys,
+        callback: cb
+      })
+  },
+  bindKeyReleased: (keys, cb) => {
+    if (Array.isArray(keys))
+      for (let key of keys)
         KEYS.events.released.push({
-          key: keys,
+          key: key,
           callback: cb
         })
-    }
+    else
+      KEYS.events.released.push({
+        key: keys,
+        callback: cb
+      })
+  }
 }
 
 const allChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
 var Random = {
-    random: Math.random,
-    range: (min, max) => (Math.random() * (max - min) + min),
-    choice: (choices) => {
-      if (choices instanceof Object) choices=Object.values(choices);
-      return choices[Math.floor(Math.random() * choices.length)];
-    }, 
-    string: function(leng, chars) {
-          leng = leng || 12;
-          chars = chars || allChars;
-          let string = '';
-          for (let i = 0; i < leng; i++) {
-            string += chars[Math.floor(Math.random() * (chars.length - 1))];
-          }
-          return string; // gotta go cya
-        }
+  random: Math.random,
+  range: (min, max) => (Math.random() * (max - min) + min),
+  choice: (choices) => {
+    if (choices instanceof Object) choices = Object.values(choices);
+    return choices[Math.floor(Math.random() * choices.length)];
+  },
+  choices: (choices, k) => {
+    let ret = [];
+    while (ret.length <= k) {
+      ret.push(this.choice(choices));
+    }
+    return ret;
+  },
+  string: function(leng, chars) {
+    leng = leng || 12;
+    chars = chars || allChars;
+    let string = '';
+    for (let i = 0; i < leng; i++) {
+      string += chars[Math.floor(Math.random() * (chars.length - 1))];
+    }
+    return string;
+  },
+  permutation: function(leng, amt, start = 1) {
+    let rets = [];
+    for (let i = 0; i < amt; i++) {
+      rets.push(this.choice(Math.range(start, leng)));
+    }
+    return rets;
+  },
+  bits: function(k) {
+    let bits = '';
+    while (bits.length <= k) {
+      bits += this.choice(['0', '1'])
+    }
+    return bits;
+  }
 }
+Math.range = (start, end) =>{
+  return Array(end - start + 1).fill().map((_, idx) => start + idx)
+}
+
 document.addEventListener('keydown', (e) => {
   KEYS.pressed.add(e.key);
   for (let ev of KEYS.events.pressed) {
