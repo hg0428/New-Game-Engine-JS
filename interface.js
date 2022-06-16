@@ -1,9 +1,9 @@
 let programStart = Date.now();
-
+let time = 0;
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(funct) {
-  if ((Date.now() - programStart) - lastFrame >= 60) {
-    lastFrame = Date.now() - programStart;
-    funct(lastFrame);
+  if ((Date.now() - programStart) - time >= 60) {
+    time = Date.now() - programStart;
+    funct(time);
   } else {
     setTimeout(window.requestAnimationFrame, 59 - ((Date.now() - programStart) - lastFrame), funct);
   }
