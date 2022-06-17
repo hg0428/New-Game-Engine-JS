@@ -1,9 +1,11 @@
+import { Camera } from 'camera.js';
 let FPSel = document.getElementById('FPS');
 /*
 Sources for Ideas:
 https://stackoverflow.com/questions/26661909/setting-a-correct-angular-velocity-to-a-canvas-object
 https://stackoverflow.com/questions/1616448/broad-phase-collision-detection-methods
 */
+//TODO: ORGANIZE THE CODE BETTER.
 const SHAPES = {
     rect: function(ctx, x, y, w, h) {
         ctx.fillRect(x, y, w, h);
@@ -12,28 +14,6 @@ const SHAPES = {
         ctx.beginPath();
         ctx.arc(x + w / 2, y + h / 2, (w + h) / 4, 2 * Math.PI, false);
         ctx.fill();
-    }
-}
-class Camera {
-    constructor(width, height) {
-        this.width = width;
-        this.height = height;
-        this.offsetX = 0;
-        this.offsetY = 0;
-        this.zoom = 1;
-        this.rotation = 0;
-        this.centerOfRot = (0, 0);
-        // We need to add camera rotation and zooming
-        //add methods for world to screen and vice versa
-    }
-    rotateRad(rad) {
-        this.rotation += rad;
-    }
-    rotateDeg(deg) {
-        this.rotation += deg * Math.PI / 180;
-    }
-    setRotationCenter(x, y) {
-        this.centerOfRot = (x, y);
     }
 }
 
@@ -118,8 +98,8 @@ class Game {
         this.background = opts.background || "white";
         this.canvas = document.querySelector(opts.canvas || "canvas");
         this.context = this.canvas.getContext(this.rendering);
-        this.canvas.width = opts.width || document.body.offsetWidth;
-        this.canvas.height = opts.height || document.body.offsetHeight;
+        this.canvas.width = opts.width || this.canvas.style.width || document.body.offsetWidth;
+        this.canvas.height = opts.height || this.canvas.style.height ||document.body.offsetHeight;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.left = -this.width / 2;
@@ -152,7 +132,6 @@ class Game {
                 if (!width && ((top && bottom) || (top && y) || (bottom && y))) {
                     height = parent.numberDistance(top, bottom) || parent.numberDistance(y, top) * 2 || parent.numberDistance(bottom, y) * 2;
                 } else if (!height) height = 20;
-                radius = radius || (width + height) / 4 || 10;
                 x = x || (left + width / 2) || (right - width / 2) || 0;
                 y = y || (top + height / 2) || (bottom - height / 2) || 0;
                 top = y - height / 2;
@@ -162,7 +141,6 @@ class Game {
                 this._data = {
                     width: width,
                     height: height,
-                    radius: radius,
                     x: x,
                     y: y,
                     top: top,
@@ -170,6 +148,70 @@ class Game {
                     bottom: bottom,
                     right: right,
                 }
+            }
+            get x() {
+                return this._data.x;
+            }
+            set x(val) {
+                this._data.x = val;
+                this._data.left = val - this._data.width / 2;
+                this._data.right = val + this._data.width / 2;
+            }
+            get y() {
+                return this._data.y;
+            }
+            set y(val) {
+                this._data.y = val;
+                this._data.top = val - this._data.height / 2;
+                this._data.bottom = val + this._data.height / 2;
+            }
+            get left() {
+                return this._data.left;
+            }
+            set left(val) {
+                this._data.left = val;
+                this._data.x = val + this._data.width / 2;
+                this._data.right = val + this._data.width;
+            }
+            get top() {
+                return this._data.top;
+            }
+            set top(val) {
+                this._data.top = val;
+                this._data.y = val + this._data.height / 2;
+                this._data.bottom = val + this._data.height;
+            }
+            get right() {
+                return this._data.right;
+            }
+            set right(val) {
+                this._data.right = val;
+                this._data.x = val - this._data.width / 2;
+                this._data.left = val - this._data.width;
+            }
+            get bottom() {
+                return this._data.bottom;
+            }
+            set bottom(val) {
+                this._data.bottom = val;
+                this._data.y = val - this._data.height / 2;
+                this._data.top = val - this._data.height;
+            }
+            get width() {
+                return this._data.width;
+            }
+            set width(val) {
+                this._data.width = val;
+                this._data.left = this._data.x - val / 2;
+                this._data.right = this._data.x + val / 2;
+            }
+            get height() {
+                return this._data.height;
+            }
+            set height(val) {
+                this._data.height = val;
+                this._data.top = this._data.y - val / 2;
+                this._data.bottom = this._data.y + val / 2;
             }
             draw() {
 
