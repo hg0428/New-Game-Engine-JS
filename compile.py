@@ -1,5 +1,6 @@
 import os
 import re
+from jsmin import jsmin
 directory = 'engine/'
 source = 'script.js'
 target = 'engine.min.js'
@@ -15,4 +16,5 @@ while True:
     fileContent = fileContent[:imp.start()] + '\n' + fcontent + fileContent[imp.end():]
 
 os.listdir(directory)
+fileContent = jsmin(fileContent)
 open(target, 'w+').write(fileContent)

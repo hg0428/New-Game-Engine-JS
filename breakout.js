@@ -1,4 +1,3 @@
-
 const game = new Game({
   background: "black",
   width: 600,
