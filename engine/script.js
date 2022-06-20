@@ -268,7 +268,7 @@ class Game {
                 parent.context.fillStyle = this.color;
                 parent.context.fillText(this.text, this.x, this.y);
             }
-        }
+        };
         //import {{thing.js}}
     }
     hook(for_, hook) {
