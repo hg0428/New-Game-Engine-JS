@@ -21,14 +21,7 @@ this.Thing = class {
         if (typeof shape == 'string')
             shape = SHAPES[shape];
         this.shape = shape || SHAPES.rect;
-
-        //better calculate options. If left and right are supplied, you can calculate width
-        //same for top/bottom
-        //and also calculate x, and y from those.
-        //or if left and width are supplied, you can get x
-        //etc...
-        //add all that stuff.
-        //and check to make sure the values are not invalid
+        
         width = width || radius * 2 || null;
         if (!width && ((left && right) || (left && x) || (right && x))) {
             width = parent.numberDistance(right, left) || parent.numberDistance(x, left) * 2 || parent.numberDistance(right, x) * 2;

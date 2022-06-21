@@ -1,6 +1,5 @@
 import os
 import re
-import lpjsmin
 directory = 'engine/'
 source = 'script.js'
 target = 'engine.min.js'
@@ -13,12 +12,28 @@ def parse(fileContent):
         if not imp: break
         leading, fname = imp.group(1, 2)
         fcontent = leading[1:] + parse(open(directory+fname).read())
-        fcontent = fcontent.replace('\n', f'\n{leading}')
+        fcontent = fcontent.replace('\n', f'\n{leading[1:]}')
         fileContent = fileContent[:imp.start()] + '\n' + fcontent + fileContent[imp.end():]
     return fileContent
 
+def minify(content):
+    content = content.replace('\n\n', '\n')
+    content = content.replace('\t', '')
+    content = content.replace('  ', '')
+    ops = '=:+-=<>*/,|!&?'
+    for op in ops:
+        content = content.replace(' '+op, op)
+        content = content.replace(op+' ', op)
+    content = content.replace('if (', 'if(')
+    content = content.replace(') {', '){')
+    content = content.replace('else {', 'else{')
+    content = content.replace('} else', '}else')
+    single = re.compile('//.*?\n')
+    content = single.sub('', content)
+    #Remove multiline comments later.
+    return content
+
 fileContent = parse(fileContent)
-os.listdir(directory)
-fileContent = fileContent.replace('\n\n', '\n')
+fileContent = minify(fileContent)
 open(target, 'w+').write(fileContent)
-lpjsmin.minify(target)
+print(f'Compiled to {target}!')

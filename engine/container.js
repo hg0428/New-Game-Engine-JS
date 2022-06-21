@@ -105,6 +105,9 @@ this.Container = class {
         this._data.bottom = this._data.y + val / 2;
     }
     draw() {
-
+        //Draw the containers children
+        //Allow nested containers and use relative positioning
+        //Add a attribute for the absolute position of everything Thing snd Container.
+        //Maybe have a position option to choose relative or absolute.
     }
 }

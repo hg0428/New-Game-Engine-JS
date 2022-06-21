@@ -5,7 +5,6 @@ Sources for Ideas:
 https://stackoverflow.com/questions/26661909/setting-a-correct-angular-velocity-to-a-canvas-object
 https://stackoverflow.com/questions/1616448/broad-phase-collision-detection-methods
 */
-//TODO: ORGANIZE THE CODE BETTER.
 const SHAPES = {
     rect: function(ctx, x, y, w, h) {
         ctx.fillRect(x, y, w, h);

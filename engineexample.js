@@ -37,7 +37,6 @@ KEYS.bindKeyUp(KEYS.combination(['Ctrl', 'K'], () => { }));//That ok?
 KEYS.bindKeyDown(KEYS.combination(['Ctrl', 'K'], () => { }));
 KEYS.bindKeyHeld(KEYS.combination(['Ctrl', 'K'], () => { }));
 
-KEYS.combination = (args) => { type: "combination", keys: args }
 KEYS.bindKeyHeld(["S", "ArrowDown"], () => { })  // called each frame? yes
 KEYS.bindKeyDown(["S", "ArrowDown"], () => { })  // called when its pressed down
 KEYS.bindKeyUp(["S", "ArrowDown"], () => { })    // called when its released

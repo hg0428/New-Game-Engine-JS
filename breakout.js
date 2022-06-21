@@ -55,7 +55,7 @@ paddle.collided(ball, (axis, side) => {
     ball.vel.x = -ball.vel.x
 });
 
-KEYS.bindKeyHold('a', e => { if (paddle.left > game.left) paddle.moveX(-0.3 * e); });
+KEYS.bindKeyHold('a', e => { if (paddle.left > game.left) paddle.moveX(-0.3 * e) });
 KEYS.bindKeyHold('d', e => { if (paddle.right < game.right) paddle.moveX(0.3 * e) });
 
 game.hook("gameloop", () => {

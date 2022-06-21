@@ -53,7 +53,9 @@ var KEYS = {
         key: keys,
         callback: cb
       })
-  }
+  },
+  combination: (args) => {return { type: "combination", keys: args }}
+
 }
 
 const allChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
@@ -105,6 +107,7 @@ document.addEventListener('keydown', (e) => {
     if (ev.key === e.key) {
       ev.callback()
     }
+    //add combination support
   }
 });
 document.addEventListener('keyup', (e) => {
@@ -113,5 +116,6 @@ document.addEventListener('keyup', (e) => {
     if (ev.key === e.key) {
       ev.callback()
     }
+    //add combination support
   }
 });
