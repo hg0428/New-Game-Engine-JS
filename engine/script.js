@@ -1,3 +1,4 @@
+// import {{interface.js}}
 let FPSel = document.getElementById('FPS');
 /*
 Sources for Ideas:
@@ -15,7 +16,7 @@ const SHAPES = {
         ctx.fill();
     }
 }
-// import {{camera.js}}
+/* import {{camera.js}} */
 //COMPILE.PY turns the above into the conents of that file.
 function rectCollide(t1, t2) {
     return (t1.left < t2.right &&
@@ -108,168 +109,9 @@ class Game {
         this.hooks = [];
         this.running = false;
         const parent = this;
-        this.Container = class {
-            constructor({
-                x,
-                y,
-                width,
-                height,
-                overhead,
-                left,
-                right,
-                top,
-                bottom,
-                background,
-                ...opts
-            }) {
-                width = width || radius * 2 || null;
-                if (!width && ((left && right) || (left && x) || (right && x))) {
-                    width = parent.numberDistance(right, left) || parent.numberDistance(x, left) * 2 || parent.numberDistance(right, x) * 2;
-                } else if (!width) width = 20;
-                height = height || radius * 2 || null;
-                if (!width && ((top && bottom) || (top && y) || (bottom && y))) {
-                    height = parent.numberDistance(top, bottom) || parent.numberDistance(y, top) * 2 || parent.numberDistance(bottom, y) * 2;
-                } else if (!height) height = 20;
-                x = x || (left + width / 2) || (right - width / 2) || 0;
-                y = y || (top + height / 2) || (bottom - height / 2) || 0;
-                top = y - height / 2;
-                left = x - width / 2;
-                bottom = y + height / 2;
-                right = x + width / 2;
-                this._data = {
-                    width: width,
-                    height: height,
-                    x: x,
-                    y: y,
-                    top: top,
-                    left: left,
-                    bottom: bottom,
-                    right: right,
-                }
-            }
-            get x() {
-                return this._data.x;
-            }
-            set x(val) {
-                this._data.x = val;
-                this._data.left = val - this._data.width / 2;
-                this._data.right = val + this._data.width / 2;
-            }
-            get y() {
-                return this._data.y;
-            }
-            set y(val) {
-                this._data.y = val;
-                this._data.top = val - this._data.height / 2;
-                this._data.bottom = val + this._data.height / 2;
-            }
-            get left() {
-                return this._data.left;
-            }
-            set left(val) {
-                this._data.left = val;
-                this._data.x = val + this._data.width / 2;
-                this._data.right = val + this._data.width;
-            }
-            get top() {
-                return this._data.top;
-            }
-            set top(val) {
-                this._data.top = val;
-                this._data.y = val + this._data.height / 2;
-                this._data.bottom = val + this._data.height;
-            }
-            get right() {
-                return this._data.right;
-            }
-            set right(val) {
-                this._data.right = val;
-                this._data.x = val - this._data.width / 2;
-                this._data.left = val - this._data.width;
-            }
-            get bottom() {
-                return this._data.bottom;
-            }
-            set bottom(val) {
-                this._data.bottom = val;
-                this._data.y = val - this._data.height / 2;
-                this._data.top = val - this._data.height;
-            }
-            get width() {
-                return this._data.width;
-            }
-            set width(val) {
-                this._data.width = val;
-                this._data.left = this._data.x - val / 2;
-                this._data.right = this._data.x + val / 2;
-            }
-            get height() {
-                return this._data.height;
-            }
-            set height(val) {
-                this._data.height = val;
-                this._data.top = this._data.y - val / 2;
-                this._data.bottom = this._data.y + val / 2;
-            }
-            draw() {
-
-            }
-        }
-        this.Text = class {
-            constructor({
-                text,
-                color,
-                background,
-                width,
-                x,
-                y,
-                size,
-                font,
-                align,
-                overhead,
-                ...opts
-            }) {
-                this.text = text;
-                this.overhead = overhead || false;
-                this.color = color || "black";
-                this.background = background;
-                this.width = width;
-                this.x = x || 0;
-                this.y = y || 0;
-                this.size = size || 16;
-                this.font = font || "Arial";
-                this.align = align || "left";
-                parent.texts.push(this);
-            }
-
-            draw() {
-                //I have a really great idea, but it will require some work.
-                //It will make things harder internally, but make it so so much easier for the user.
-                //We move all attributes to a .data object or something like that, and then have a setter and getter for all of them, that way the user can do:
-                //thing.x = 9908, and it will auto calculate all the new values for everything.
-                //They could set thing.left, thing.right, etc and it would calculate everything else.
-                // well it would speed the engine up ig
-                //I was thinking it would make it slightly slower?
-                //WHich is faster? a setter function and a getter function or  this.x=8 and recalculate it every time. true. Wanna add it?  
-                //Yes, but think about how much easier it would be if the user could simply set any value on the Thing, and everything would automatically adjust.
-                //No, if I do ball.left = 60, it will just break the program, because if in our update loop we updated that, it would loop and not work.
-                //But, if it could be modifyied, that would make it so much easier instead of ball.x = ball.x - this.left.
-                //I feel like this way would be easier for the user....
-                //btw, I originally set coords to center because it made it easier to draw circles.
-                //And it would make it a lot more efficient than adding functions everywhere.
-                // ima  finish fonts
-                //ok, fine.ok
-                parent.context.textAlign = this.align;
-                parent.context.font = `${this.size}px ${this.font}`;
-                if (this.background) {
-                    parent.context.fillStyle = this.background;
-                    parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size);
-                }
-                parent.context.fillStyle = this.color;
-                parent.context.fillText(this.text, this.x, this.y);
-            }
-        };
-        //import {{thing.js}}
+        /* import {{container.js}} */
+        /* import {{text.js}} */
+        /* import {{thing.js}} */
     }
     hook(for_, hook) {
         if (!this.hooks[for_]) this.hooks[for_] = [];
