@@ -20,4 +20,5 @@ def parse(fileContent):
 fileContent = parse(fileContent)
 os.listdir(directory)
 fileContent = fileContent.replace('\n\n', '\n')
+open(target, 'w+').write(fileContent)
 lpjsmin.minify(target)

@@ -17,16 +17,14 @@ const SHAPES = {
     }
 }
 /* import {{camera.js}} */
-//COMPILE.PY turns the above into the conents of that file.
+//COMPILE.PY turns the above into the contents of that file.
 function rectCollide(t1, t2) {
     return (t1.left < t2.right &&
         t1.right > t2.left &&
         t1.top < t2.bottom &&
         t1.bottom > t2.top);
 };
-//hmmm, did you test them?ok
-// these functions work because I copied them lmao
-// come to the update  thing  yes
+
 function lineLineCollide(x1, y1, x2, y2, x3, y3, x4, y4) {
     const uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1))
     const uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1))
@@ -163,7 +161,7 @@ class Game {
             self.context.fillRect(0, 0, self.canvas.width, self.canvas.height);
 
             for (let ev of KEYS.events.held) {
-                if (KEYS.pressed.has(ev.key)) ev.callback()
+                if (KEYS.pressed.has(ev.key)) ev.callback(elapsed)
             }
             //Implement camera rotation (text+thing), remember camera can not affect it if overhead is set to true.
             //ctx.translate(camera.cen)

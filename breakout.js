@@ -7,11 +7,11 @@ const game = new Game({
 const paddle = new game.Thing({
   width: 90,
   height: 10,
-  y: game.height / 2 - 20,
+  y: game.bottom - 20,
   background: "gray"
 });
 
-const ball = new game.Thing({//10 happens to be the default radius.
+const ball = new game.Thing({
   shape: SHAPES.circle,
   background: "white",
 });
@@ -22,7 +22,7 @@ function getColorFromY(y) {
 
 function reset() {
   ball.teleport(0, -20);
-  walls = []
+  walls = [];
   for (let y = 0; y < 5; y++) {
     for (let x = -7; x < 7; x++) {
       walls.push(new game.Thing({
@@ -45,7 +45,7 @@ function reset() {
   ball.vel = {
     x: Random.choice([-2, -1, 1, 2]) * 100,
     y: 100,
-  }
+  };
 };
 reset();
 paddle.collided(ball, (axis, side) => {
@@ -55,31 +55,16 @@ paddle.collided(ball, (axis, side) => {
     ball.vel.x = -ball.vel.x
 });
 
+KEYS.bindKeyHold('a', e => { if (paddle.left > game.left) paddle.moveX(-0.3 * e); });
+KEYS.bindKeyHold('d', e => { if (paddle.right < game.right) paddle.moveX(0.3 * e) });
+
 game.hook("gameloop", () => {
-  if (KEYS.pressed.has("a") && paddle.left > -game.width / 2) {
-    paddle.vel.x = - 300;
-  } if (KEYS.pressed.has("d") && paddle.right < game.width / 2) {
-    paddle.vel.x = 300;
-  } else if (!KEYS.pressed.has("a")) {
-    paddle.vel.x = 0;
-  } if (paddle.vel.x != 0 && paddle.left < -game.width / 2) {
-    paddle.vel.x = 0;
-    paddle.left = -game.width / 2;
-  } if (paddle.vel.x != 0 && paddle.right > game.width / 2) {
-    paddle.vel.x = 0;
-    paddle.right = game.width / 2;
-  }
-  if (ball.left <= -game.width / 2) {
-    ball.vel.x = -ball.vel.x
-  } else if (ball.right >= game.width / 2) {
-    ball.vel.x = -ball.vel.x
-  }
-  if (ball.top <= -game.height / 2) {
+  if (ball.left <= game.left || ball.right >= game.right) 
+    ball.vel.x = -ball.vel.x;
+  if (ball.top <= game.top) 
     ball.vel.y = -ball.vel.y;
-  }
-  if (ball.y - ball.height > game.height / 2) {
+  if (ball.top > game.bottom) 
     reset();
-  }
-})
+});
 
 document.onclick = () => game.start();
