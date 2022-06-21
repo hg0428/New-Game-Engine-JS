@@ -1,4 +1,4 @@
-// import {{interface.js}}
+/* import {{interface.js}} */
 let FPSel = document.getElementById('FPS');
 /*
 Sources for Ideas:
