@@ -105,6 +105,10 @@ this.Container = class {
         this._data.bottom = this._data.y + val / 2;
     }
     draw() {
+        if (this.background!='transparent') {
+            parent.context.fillStyle = this.background;
+            parent.context.fillRect(this._data.left, this._data.top, this._data.width, this._data.height);
+        }
         //Draw the containers children
         //Allow nested containers and use relative positioning
         //Add a attribute for the absolute position of everything Thing snd Container.

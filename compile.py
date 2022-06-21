@@ -16,7 +16,7 @@ def parse(fileContent):
         fileContent = fileContent[:imp.start()] + '\n' + fcontent + fileContent[imp.end():]
     return fileContent
 
-def minify(content):
+def minify(content): # Breaks the code.
     content = content.replace('\n\n', '\n')
     content = content.replace('\t', '')
     content = content.replace('  ', '')
@@ -24,7 +24,6 @@ def minify(content):
     for op in ops:
         content = content.replace(' '+op, op)
         content = content.replace(op+' ', op)
-    content = content.replace('if (', 'if(')
     content = content.replace(') {', '){')
     content = content.replace('else {', 'else{')
     content = content.replace('} else', '}else')
@@ -34,6 +33,6 @@ def minify(content):
     return content
 
 fileContent = parse(fileContent)
-fileContent = minify(fileContent)
+#fileContent = minify(fileContent)
 open(target, 'w+').write(fileContent)
 print(f'Compiled to {target}!')
