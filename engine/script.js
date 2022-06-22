@@ -5,16 +5,8 @@ Sources for Ideas:
 https://stackoverflow.com/questions/26661909/setting-a-correct-angular-velocity-to-a-canvas-object
 https://stackoverflow.com/questions/1616448/broad-phase-collision-detection-methods
 */
-const SHAPES = {
-    rect: function(ctx, x, y, w, h) {
-        ctx.fillRect(x, y, w, h);
-    },
-    circle: function(ctx, x, y, w, h) {
-        ctx.beginPath();
-        ctx.arc(x + w / 2, y + h / 2, (w + h) / 4, 2 * Math.PI, false);
-        ctx.fill();
-    }
-}
+
+/* import {{shape-color.js}} */
 /* import {{camera.js}} */
 //COMPILE.PY turns the above into the contents of that file.
 function rectCollide(t1, t2) {
@@ -93,6 +85,10 @@ class Game {
         this.rendering = opts.rendering || '2d'; //if we add webgl support
         this.background = opts.background || "white";
         this.canvas = document.querySelector(opts.canvas || "canvas");
+        if (!canvas) {
+            this.canvas = document.createElement('canvas');
+            document.body.appendChild(this.canvas);
+        }
         this.context = this.canvas.getContext(this.rendering);
         this.canvas.width = opts.width || this.canvas.style.width || document.body.offsetWidth;
         this.canvas.height = opts.height || this.canvas.style.height ||document.body.offsetHeight;
@@ -109,6 +105,15 @@ class Game {
         /* import {{container.js}} */
         /* import {{text.js}} */
         /* import {{thing.js}} */
+    }
+    Pattern(image, opts) {
+        if (typeof image == 'string') {
+            ({width, height} = opts);
+            img = new Image(width, height);
+            img.src = image;
+            image = img;
+        }
+        return this.context.createPattern(image, opt.repeat || 'no-repeat');
     }
     hook(for_, hook) {
         if (!this.hooks[for_]) this.hooks[for_] = [];

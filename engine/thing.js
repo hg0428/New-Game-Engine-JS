@@ -9,10 +9,12 @@ this.Thing = class {
         top,
         bottom,
         shape,
-        background,
+        colorScheme,
+        colourScheme,
         radius,
         collisions,
         overhead,
+        background,
         ...opts
     }) {
         //add something to auto keep a Thing within the viewport
@@ -49,7 +51,8 @@ this.Thing = class {
             right: right,
         }
         this.id = Random.string(12) + this.name;
-        this.background = background || "green";
+        this.colorScheme = colorScheme || colourScheme || new ColorScheme({background:background});
+        //add this.colourScheme alias.
         //this.visible = false;
         this.realX = 0;
         this.realY = 0;
@@ -317,6 +320,7 @@ this.Thing = class {
         parent.context.fillStyle = this.background;
 
         this.shape(parent.context, this.realX, this.realY, this._data.width, this._data.height);
+        this.colorScheme.draw(parent.context);
         if (this._destination) {
             if ((this._destination[0] == '*' || this._destination[0] == this._data.x) && (this._destination[1] == '*' || this._destination[1] == this._data.y)) {
                 this._destination = null;

@@ -10,11 +10,17 @@ this.Container = class {
         top,
         bottom,
         background,
+        shape,
         ...opts
     }) {
         //Later on, make the entire game a container, and allow nested containers. 
         //.draw on a container will draw everything it contains.
         //Make the x, y and everything relative to its container.
+        this.background = background;
+        this.overhead = overhead;
+        if (typeof shape == 'string')
+            shape = SHAPES[shape];
+        this.shape = shape || SHAPES.rect;
         width = width || radius * 2 || null;
         if (!width && ((left && right) || (left && x) || (right && x))) {
             width = parent.numberDistance(right, left) || parent.numberDistance(x, left) * 2 || parent.numberDistance(right, x) * 2;
@@ -39,6 +45,7 @@ this.Container = class {
             bottom: bottom,
             right: right,
         }
+        //When drawing, make sure to take the parent's posisition into account.
     }
     get x() {
         return this._data.x;

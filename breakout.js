@@ -1,14 +1,20 @@
 const game = new Game({
-  background: "black",
+  background: "green",
   width: 600,
   height: 400
 });
-
+//The border is only on the paddle, but for some reason it shows up on everything.
 const paddle = new game.Thing({
   width: 90,
   height: 10,
   y: game.bottom - 20,
-  background: "gray"
+  colorScheme: new ColorScheme({
+    background: "grey",
+    border: {
+      width: 8,
+      style: 'red'
+    }
+  })
 });
 
 const ball = new game.Thing({
