@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!--
+  So, only the paddle is supposed to have a border
+  -->
+	<!--
+	i dont see a border around any of the things
+  also, you have to use compile.py
+  I added that because it was the best way I could find to organize the code without adding modules and stuff.
+  This was working on my local version...
+  But there is an error here.
+	yea ok, ColorScheme not defined?
+	It was working on my local one
+  I think I pulled.
+	oh wait I might have not pulled
+	oh ok
+  why wont it tell the line num in errors
+  I ran it too.
+  What line num is the error on??????
+  How did you find that?
+  I ran compile.py still errors. 
+  Oh, I forgot about that.
+	Breakout.js line 11, ColorScheme is not defined
+	I open it in a new tab and use chrome devtools, because I dont like the built in ones
+	//Im going to check the engine.min.js and make sure its there
+	Ok
+	Different error now, in engine.min.js line 209
+  Working now!
+	-->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title></title>
@@ -26,9 +53,13 @@
 <body>
   <div id="topbar"><span id="FPS">FPS: </span></div>
   <canvas id="canvas"></canvas>
-  <script src="engine.min.js"></script>
   <!-- <script src="pong.js"></script> -->
+  <!--
+  Must have been that , in the code.
+  yea
+  Well, colorScheme is mostly implemented, check out my implementation and see if you come up with any ideas
+	-->
+  <script src="engine.min.js"></script>
   <script src="breakout.js"></script>
 </body>
 
-</html>

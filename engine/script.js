@@ -112,8 +112,9 @@ class Game {
             img = new Image(width, height);
             img.src = image;
             image = img;
-        }
-        return this.context.createPattern(image, opt.repeat || 'no-repeat');
+        } // Oh i didnt know context.createPattern was a thing
+        //
+        return this.context.createPattern(image, opts.repeat || 'no-repeat');
     }
     hook(for_, hook) {
         if (!this.hooks[for_]) this.hooks[for_] = [];
@@ -125,10 +126,31 @@ class Game {
             for (let i = 0; i < this.hooks[for_].length; i++)
                 this.hooks[for_][i](...params);
     }
-    getCurrentState() {
+    getCurrentState() { 
         //finish later
-    }
-    saveState(id) {
+		//I didn't know how to implement this without using up a ton of memory trying to save the entire game. Well, hmmm, but how can we save it, just save the position of everything and container and everything including text and the camera?
+      //I was planning to save making this until much later on.
+      //btw, when can we add it  your UI engine?
+      //ok I still need to finish containers.
+      //So, with containers, how should we implement that?
+      //What if a thing is outside its container? Will it not be drawn?
+      //if nothing, then 
+      //When things are drawn, their coords should be relative to the center of their container, right?
+      //Centered is easier. ok, so we still have a lot to implement there.
+      //plus there is still .left, .top
+      //The containers, and makeing the game be a big container. BTW, I also implemented automatic width/height/other attribute calcualtion. It takes the other values sucha as x, and y, top, and left, and trys to get enough info to calculate everything else. I thought that was cool.
+      //Also, whats with Text? What will we do with that?
+      //Can text be put into containers?
+      //But, text works weird. It works differently than everything else, but thats mostly because you can't make text work like everything else. 
+      //no, i mean the center coords with top left, etc.
+      //even containers have top left, and the game, so its just weird that text doesn't.
+      //I think we also need to alow people to link their custom collision detection functions
+	  //text doesnt really need .left, .top etc because its text
+      //true... but it would be nice to have.
+      //btw, do you like I condensed breakout.js?
+	  
+	}
+    saveState(id) {//for saving the games state to restore it later.
         //Save the current state of the game and everything in it to restore later.
         //game.saveState(0)
         //game.restoreState(0)
