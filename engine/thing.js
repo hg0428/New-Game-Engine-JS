@@ -1,24 +1,26 @@
 this.Thing = class {
-    constructor({
-        width,
-        height,
-        x,
-        y,
-        left,
-        right,
-        top,
-        bottom,
-        shape,
-        colorScheme,
-        colourScheme,
-        radius,
-        collisions,
-        overhead,
-        background,
-        border,
-        borderWidth,
-        ...opts
-    }) {
+    constructor(opts) {
+        opts = opts || {};
+        ({
+          width,
+          height,
+          x,
+          y,
+          left,
+          right,
+          top,
+          bottom,
+          shape,
+          colorScheme,
+          colourScheme,
+          radius,
+          collisions,
+          overhead,
+          background,
+          border,
+          borderWidth
+        } = opts);
+        //make is still work even if a object is not passed to the constructor.
         //add something to auto keep a Thing within the viewport
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';
@@ -321,9 +323,7 @@ this.Thing = class {
 
         this.triggerEvent("moved");
         this.posUpdate();
-
-        parent.context.fillStyle = this.background;
-
+      
         this.shape(parent.context, this.realX, this.realY, this._data.width, this._data.height);
         this.colorScheme.draw(parent.context);
         if (this._destination) {

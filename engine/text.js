@@ -1,27 +1,16 @@
 this.Text = class {
-    constructor({
-        text,
-        color,
-        background,
-        width,
-        x,
-        y,
-        size,
-        font,
-        align,
-        overhead,
-        ...opts
-    }) {
-        this.text = text;
-        this.overhead = overhead || false;
-        this.color = color || "black";
-        this.background = background;
-        this.width = width;
+    constructor(opts) {
+        opts = opts || {};
+        this.text = opts.text || 'Hello World';
+        this.overhead = opts.overhead || false;
+        this.color = opts.color || "black";
+        this.background = opts.background || 'transparent';
+        this.width = opts.width;
         this.x = x || 0;
         this.y = y || 0;
-        this.size = size || 16;
-        this.font = font || "Arial";
-        this.align = align || "left";
+        this.size = opts.size || 16;
+        this.font = opts.font || "Arial";
+        this.align = opts.align || "left";
         parent.texts.push(this);
     }
 
@@ -44,7 +33,7 @@ this.Text = class {
         //ok, fine.ok
         parent.context.textAlign = this.align;
         parent.context.font = `${this.size}px ${this.font}`;
-        if (this.background) {
+        if (this.background && this.background!='transparent') {
             parent.context.fillStyle = this.background;
             parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size);
         }
