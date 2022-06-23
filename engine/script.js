@@ -176,8 +176,8 @@ class Game {
 
         function gameLoop(t) {
             self.timestamp = t;
-            self.triggerHook("gameloop");
             elapsed = t - lastFrame;
+            self.triggerHook("gameloop", elapsed);
             lastFrame = t;
 
             // NOTE: CHANGED ELAPSED TO BE SECONDS (deltaTime, draw method)
