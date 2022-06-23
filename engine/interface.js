@@ -102,6 +102,7 @@ Math.range = (start, end) =>{
 }
 
 document.addEventListener('keydown', (e) => {
+  if (e.repeat) { return }
   KEYS.pressed.add(e.key);
   for (let ev of KEYS.events.pressed) {
     if (ev.key === e.key) {
@@ -111,6 +112,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 document.addEventListener('keyup', (e) => {
+  if (e.repeat) { return }
   KEYS.pressed.delete(e.key);
   for (let ev of KEYS.events.released) {
     if (ev.key === e.key) {

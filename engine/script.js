@@ -85,7 +85,7 @@ class Game {
         this.rendering = opts.rendering || '2d'; //if we add webgl support
         this.background = opts.background || "white";
         this.canvas = document.querySelector(opts.canvas || "canvas");
-        if (!canvas) {
+        if (!this.canvas) {
             this.canvas = document.createElement('canvas');
             document.body.appendChild(this.canvas);
         }

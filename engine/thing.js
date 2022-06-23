@@ -15,6 +15,8 @@ this.Thing = class {
         collisions,
         overhead,
         background,
+        border,
+        borderWidth,
         ...opts
     }) {
         //add something to auto keep a Thing within the viewport
@@ -51,7 +53,10 @@ this.Thing = class {
             right: right,
         }
         this.id = Random.string(12) + this.name;
-        this.colorScheme = colorScheme || colourScheme || new ColorScheme({background:background});
+        this.colorScheme = colorScheme || colourScheme || new ColorScheme({background:background, border:{
+            style:border,
+            width:borderWidth
+        }});
         //add this.colourScheme alias.
         //this.visible = false;
         this.realX = 0;
