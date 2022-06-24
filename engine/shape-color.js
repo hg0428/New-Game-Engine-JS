@@ -11,14 +11,13 @@ const SHAPES = {
     }
 }
 class ColorScheme {
-    constructor(opts) {
-        opts = opts || {};
-        ({
+    constructor({
           background,
           border,
           fillRule,
-          fill, 
-        } = opts);
+          fill,
+          ...opts 
+        } = {}) {
         /*
         background: color, image, etc, default: black
 	    border:

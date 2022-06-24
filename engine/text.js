@@ -1,20 +1,22 @@
 this.Text = class {
-    constructor(opts) {
-        opts = opts || {};
-        this.text = opts.text || 'Hello World';
+    constructor({
+        text,
+        ...opts
+        } = {}) {
+        this.text = text || 'Hello World';
         this.overhead = opts.overhead || false;
         this.color = opts.color || "black";
         this.background = opts.background || 'transparent';
         this.width = opts.width;
-        this.x = x || 0;
-        this.y = y || 0;
+        this.x = opts.x || 0;
+        this.y = opts.y || 0;
         this.size = opts.size || 16;
         this.font = opts.font || "Arial";
         this.align = opts.align || "left";
         parent.texts.push(this);
     }
 
-    draw() {
+    draw(elapsed) {
         //I have a really great idea, but it will require some work.
         //It will make things harder internally, but make it so so much easier for the user.
         //We move all attributes to a .data object or something like that, and then have a setter and getter for all of them, that way the user can do:
@@ -38,6 +40,6 @@ this.Text = class {
             parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size);
         }
         parent.context.fillStyle = this.color;
-        parent.context.fillText(this.text, this.x, this.y);
+        parent.context.fillText(this.text, parent.width/2+this.x, parent.height/2+this.y);
     }
 };

@@ -72,9 +72,7 @@ function rectLineCollide(rect, line) {
     };
 }
 class Game {
-    constructor(opts) {
-        opts = opts || {};
-
+    constructor(opts = {}) {
         this.camera = new Camera();
         this.things = [];
         this.texts = [];
@@ -194,8 +192,9 @@ class Game {
             //ctx.rotate(45 * Math.PI / 180);
             for (let thing of self.things)
                 thing.draw(elapsed);
+            console.log(self.texts);
             for (let text of self.texts)
-                text.draw();
+                text.draw(elapsed);
             if (self.running) window.requestAnimationFrame(gameLoop);
         }
 

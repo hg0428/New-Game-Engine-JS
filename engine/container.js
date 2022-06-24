@@ -1,7 +1,5 @@
 this.Container = class {
-    constructor(opts) {
-        opts = opts || {};
-        ({
+    constructor({
           x,
           y,
           width,
@@ -12,8 +10,9 @@ this.Container = class {
           top,
           bottom,
           background,
-          shape
-        } = opts);
+          shape,
+          ...opts
+        } = {}) {
         //Later on, make the entire game a container, and allow nested containers. 
         //.draw on a container will draw everything it contains.
         //Make the x, y and everything relative to its container.
