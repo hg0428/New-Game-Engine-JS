@@ -4,6 +4,7 @@ const game = new Game({
   height: 400
 });
 //The border is only on the paddle, but for some reason it shows up on everything.
+//let something = new game.Text();
 const paddle = new game.Thing({
   width: 90,
   height: 10,

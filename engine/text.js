@@ -33,7 +33,7 @@ this.Text = class {
         //ok, fine.ok
         parent.context.textAlign = this.align;
         parent.context.font = `${this.size}px ${this.font}`;
-        if (this.background && this.background!='transparent') {
+        if (this.background && this.background != 'transparent') {
             parent.context.fillStyle = this.background;
             parent.context.fillRect(this.x, this.y, parent.context.measureText(this.text), this.size);
         }

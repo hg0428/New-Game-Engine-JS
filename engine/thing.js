@@ -20,7 +20,6 @@ this.Thing = class {
           border,
           borderWidth
         } = opts);
-        //make is still work even if a object is not passed to the constructor.
         //add something to auto keep a Thing within the viewport
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';

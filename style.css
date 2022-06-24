@@ -1,18 +1,18 @@
 html, body {
   height: 100%;
   width: 100%;
-  overflow:hidden; /* its hidden not none */
+  overflow: hidden;
 }
 canvas {
-  position:fixed;
-  top:0;
-  left:0;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 #topbar {
   position: fixed;
-  top:0;
-  left:0;
-  padding-left:10px;
-  padding-top:10px;
-  padding-right:10px;
+  top: 0;
+  left: 0;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-right: 10px;
 }
