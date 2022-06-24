@@ -5,8 +5,26 @@ const game = new Game({
 });
 //The border is only on the paddle, but for some reason it shows up on everything.
 //let something = new game.Text();
+new game.Thing({
+  x:0,
+  y:0,
+  height:game.height,
+  width:2,
+  background: 'yellow'
+})
+new game.Thing({
+  x:0,
+  y:0,
+  height:2,
+  width:game.width,
+  background: 'yellow'
+})
 let text = new game.Text({
-  color:'green'
+  x: 0,
+  y: 0,
+  color:'green',
+  background: 'rgba(255, 255, 255, 0.7)',
+  size: 25
 })
 const paddle = new game.Thing({
   width: 90,
