@@ -1,7 +1,5 @@
 this.Thing = class {
-    constructor(opts) {
-        opts = opts || {};
-        ({
+    constructor({
           width,
           height,
           x,
@@ -18,8 +16,9 @@ this.Thing = class {
           overhead,
           background,
           border,
-          borderWidth
-        } = opts);
+          borderWidth,
+          ...opts
+        } = {}) {
         //add something to auto keep a Thing within the viewport
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';
@@ -54,7 +53,7 @@ this.Thing = class {
             right: right,
         }
         this.id = Random.string(12) + this.name;
-        this.colorScheme = colorScheme || colourScheme || new ColorScheme({background:background, border:{
+        this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({background, border: {
             style:border,
             width:borderWidth
         }});
