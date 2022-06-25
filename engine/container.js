@@ -12,7 +12,6 @@ this.Container = class {
           bottom,
           background,
           shape,
-          background,
           border,
           borderWidth,
           colorScheme,
