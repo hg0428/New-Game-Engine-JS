@@ -104,9 +104,12 @@ class Game {
         /* import {{text.js}} */
         /* import {{thing.js}} */
     }
-    Pattern(image, opts) {
+    Pattern(image, {
+        width, 
+        height,
+        ...opts
+        } = {}) {
         if (typeof image == 'string') {
-            ({width, height} = opts);
             img = new Image(width, height);
             img.src = image;
             image = img;
