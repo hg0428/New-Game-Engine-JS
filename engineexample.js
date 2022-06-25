@@ -40,8 +40,12 @@ KEYS.bindKeyHeld(KEYS.combination(['Ctrl', 'K'], () => { }));
 KEYS.bindKeyHeld(["S", "ArrowDown"], () => { })  // called each frame? yes
 KEYS.bindKeyDown(["S", "ArrowDown"], () => { })  // called when its pressed down
 KEYS.bindKeyUp(["S", "ArrowDown"], () => { })    // called when its released
-//ok, that looks great.
-//We should still keep the KEYS.pressed right?ok
+
+Gamepads 
+//List of all connected gamepads, sorted so that their position n the array is their gamepad.index
+Gampad.bindButton()?
+//idk
+//something like that.
 
 //What's the draw loop? The for of loop where we draw everything?
 // when the stuff gets dra

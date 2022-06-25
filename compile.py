@@ -1,13 +1,12 @@
 import os
 import re
 directory = 'engine/'
-source = 'script.js' # replit glitching, You are not including shape-color.js in sources maybe?
+source = 'script.js' 
 target = 'engine.min.js'
 importCmd = re.compile('(\s*)/\*\s*import\s*\{\{(.+)\}\}\s*\*/')
 fileContent = open(directory+source).read()
-#it compiled correctly. It inlcuded it and everything.
-#On line 155 in engine.min.js.hmm
-# maybe because its defined after its being used
+
+
 def parse(fileContent):
     while True:
         imp = importCmd.search(fileContent)

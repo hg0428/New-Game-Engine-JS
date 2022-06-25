@@ -1,3 +1,4 @@
+//MAYBE Containers were a bad idea.
 this.Container = class {
     constructor({
           x,
@@ -11,11 +12,17 @@ this.Container = class {
           bottom,
           background,
           shape,
+          background,
+          border,
+          borderWidth,
+          colorScheme,
+          colourScheme,
           ...opts
         } = {}) {
         //Later on, make the entire game a container, and allow nested containers. 
         //.draw on a container will draw everything it contains.
         //Make the x, y and everything relative to its container.
+        //Make a screen coords to game coords function and vice versa, and make sure to calculate all the container's position and the relative pos.
         this.background = background;
         this.overhead = overhead;
         if (typeof shape == 'string')
@@ -46,6 +53,11 @@ this.Container = class {
             right: right,
         }
         //When drawing, make sure to take the parent's posisition into account.
+        this.children = [];
+        this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({background, border: {
+            style:border,
+            width:borderWidth
+        }});
     }
     get x() {
         return this._data.x;
@@ -111,10 +123,14 @@ this.Container = class {
         this._data.top = this._data.y - val / 2;
         this._data.bottom = this._data.y + val / 2;
     }
-    draw() {
-        if (this.background!='transparent') {
+    draw(elapsed) {
+        if (this.background != 'transparent') {
             parent.context.fillStyle = this.background;
-            parent.context.fillRect(this._data.left, this._data.top, this._data.width, this._data.height);
+            SHAPES.rect(parent.context, this._data.left, this._data.top, this._data.width, this._data.height)
+            this.colorScheme.draw();
+        }
+        for (let thing of this.children) {
+            thing.draw(elapsed);
         }
         //Draw the containers children
         //Allow nested containers and use relative positioning
