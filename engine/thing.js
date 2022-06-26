@@ -161,6 +161,9 @@ this.Thing = class {
         parent.things = parent.things.filter(x => x !== this);
         this.draw = () => null;
         delete this.x, this.y, this.width, this.height, this.radius, this.left, this.right, this.top, this.bottom, this._data, this.triggerEvent;
+        for (let thing of game.things) {
+            thing._removeCollisions(this.id);
+        }
         //delete this;
         //if (inst) delete inst;
     }
@@ -199,6 +202,11 @@ this.Thing = class {
                 if (!this.collisions[oth.id]) this.collisions[oth.id] = []
                 this.collisions[oth.id].push(cb)
             }
+        }
+    }
+    _removeCollisions(otherid) {
+        if (this.collisions[otherid]) {
+            delete this.collisions[otherid];
         }
     }
 
