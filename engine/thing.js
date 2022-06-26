@@ -17,9 +17,11 @@ this.Thing = class {
           background,
           border,
           borderWidth,
+          custom,
           ...opts
         } = {}) {
         //add something to auto keep a Thing within the viewport
+        this.custom = custom || {}; //for people to store custom values
         this.image = opts.image;
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';

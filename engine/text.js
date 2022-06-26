@@ -7,8 +7,10 @@ this.Text = class {
         top,
         right,
         bottom,
+        custom,
         ...opts
         } = {}) {
+        this.custom = custom || {}; //for people to store custom values
         this.size = opts.size || 16;
         this.text = text || 'Hello World';
         this.overhead = opts.overhead || false;

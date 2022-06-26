@@ -92,6 +92,7 @@ function rectLineCollide(rect, line) {
 }
 class Game {
     constructor(opts = {}) {
+        this.custom = opts.custom || {}; //for people to store custom values
         this.camera = new Camera();
         this.things = [];
         this.texts = [];

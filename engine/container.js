@@ -16,12 +16,14 @@ this.Container = class {
           borderWidth,
           colorScheme,
           colourScheme,
+          custom,
           ...opts
         } = {}) {
         //Later on, make the entire game a container, and allow nested containers. 
         //.draw on a container will draw everything it contains.
         //Make the x, y and everything relative to its container.
         //Make a screen coords to game coords function and vice versa, and make sure to calculate all the container's position and the relative pos.
+        this.custom = custom || {}; //for people to store custom values
         this.background = background;
         this.overhead = overhead;
         if (typeof shape == 'string')
