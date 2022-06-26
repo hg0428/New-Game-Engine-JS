@@ -295,7 +295,7 @@ this.Thing = class {
                         }
                     }
                 }
-                if (this.collisions[other.id])
+                if (this.collisions[other.id]) {
                     let event = {
                         axis:axis,
                         side:side,
@@ -305,6 +305,7 @@ this.Thing = class {
                     }
                     return true;
             }
+        }
     }
     update() {
 
