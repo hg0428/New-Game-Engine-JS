@@ -5,6 +5,25 @@ Sources for Ideas:
 https://stackoverflow.com/questions/26661909/setting-a-correct-angular-velocity-to-a-canvas-object
 https://stackoverflow.com/questions/1616448/broad-phase-collision-detection-methods
 */
+/*
+Things to add:
+- [ ] More Shapes and better shape/size customization.
+- [ ] Rotating of Things, Text (and other classes), and Camera.
+- [ ] A Game.fade(ms, color=black, targetOpacity=1), slowly fades to $color over the course of $ms milliseconds. Add after draw, as a rect over the canvas, slowly increase the opacity until it reaches $targetOpacity
+- [ ] UI Engine
+- [ ] Thing/Container/Text click events
+- [ ] Finish Containers
+- [ ] Gradients
+- [ ] Isometric View
+- [ ] Scenes
+- [ ] Animations
+- [ ] New Gamepad API
+- [ ] Touch Controls and Thing/Container/Text touch and drag events.
+- [ ] Auto collision handling
+- [ ] Auto Gravity
+- [ ] Better Image Support
+- [x] A way to make Text act like a Thing (movable, center coords)
+ */
 
 /* import {{shape-color.js}} */
 /* import {{camera.js}} */
