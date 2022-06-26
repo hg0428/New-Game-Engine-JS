@@ -8,7 +8,7 @@ const SHAPES = {
         ctx.beginPath();
         ctx.arc(x + w / 2, y + h / 2, (w + h) / 4, 2 * Math.PI, false);
         ctx.closePath();
-    }
+    },
 }
 class ColorScheme {
     constructor({

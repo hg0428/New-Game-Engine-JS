@@ -113,8 +113,7 @@ class Game {
             let img = new Image(width, height);
             img.src = image;
             image = img;
-        } // Oh i didnt know context.createPattern was a thing
-        //
+        }
         return this.context.createPattern(image, opts.repeat || 'no-repeat');
     }
     hook(for_, hook) {

@@ -20,6 +20,7 @@ this.Thing = class {
           ...opts
         } = {}) {
         //add something to auto keep a Thing within the viewport
+        this.image = opts.image;
         this.overhead = overhead || false;
         this.name = opts.name || 'unidentified';
         if (typeof shape == 'string')
@@ -321,9 +322,12 @@ this.Thing = class {
 
         this.triggerEvent("moved");
         this.posUpdate();
-      
-        this.shape(parent.context, this.realX, this.realY, this._data.width, this._data.height);
-        this.colorScheme.draw(parent.context);
+        if (this.image) {
+            parent.context.drawImage(this.image, this.realX, this.realY, this.width, this.height);
+        } else {
+            this.shape(parent.context, this.realX, this.realY, this._data.width, this._data.height);
+            this.colorScheme.draw(parent.context);
+        }
         if (this._destination) {
             if ((this._destination[0] == '*' || this._destination[0] == this._data.x) && (this._destination[1] == '*' || this._destination[1] == this._data.y)) {
                 this._destination = null;
