@@ -72,13 +72,13 @@ function reset() {
       }));
     }
   }
-  ball.collided(walls, (axis, side, b, w) => {
-    walls = walls.filter(x => x != w);
-    w.delete();
-    if (axis === "y")
-      b.vel.y = -b.vel.y
+  ball.collided(walls, event => {
+    walls = walls.filter(x => x != event.other);
+    event.other.delete();
+    if (event.axis === "y")
+      ball.vel.y = -ball.vel.y
     else
-      b.vel.x = -b.vel.x
+      ball.vel.x = -ball.vel.x
   });
   ball.vel = {
     x: Random.choice([-2, -1, 1, 2]) * 100,
@@ -87,8 +87,8 @@ function reset() {
 };
 reset();
 
-paddle.collided(ball, (axis, side) => {
-  switch (side) {
+paddle.collided(ball, event => {
+  switch (event.side) {
     case 'left':
       ball.left = paddle.right;
       ball.vel.x = Math.abs(ball.vel.x)
