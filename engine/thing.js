@@ -28,7 +28,7 @@ this.Thing = class {
     this.name = opts.name || 'unidentified';
     if (typeof shape == 'string')
       shape = SHAPES[shape];
-    this.shape = shape || SHAPES.rect;
+    this.shape = shape || SHAPES.Rect();
 
     width = width || radius * 2 || null;
     if (!width && ((left && right) || (left && x) || (right && x))) {
