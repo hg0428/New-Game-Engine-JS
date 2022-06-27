@@ -32,15 +32,15 @@ this.Text = class {
         }
         this.font = opts.font || "Arial";
         this.align = opts.align || "left";
-        parent.texts.push(this);
+        game.viewport.appendChild(this);
     }
     get text() {
         return this._text;
     }
     set text(text) {
         this._text = text;
-        parent.context.font = `${this.size}px ${this.font}`;
-        this.measure = parent.context.measureText(this.text);
+        game.context.font = `${this.size}px ${this.font}`;
+        this.measure = game.context.measureText(this.text);
         this.width = this.measure.width;
     }
     get size() {
@@ -93,29 +93,13 @@ this.Text = class {
         this._data.top = val - this.height;
     }
     draw(elapsed) {
-        //I have a really great idea, but it will require some work.
-        //It will make things harder internally, but make it so so much easier for the user.
-        //We move all attributes to a .data object or something like that, and then have a setter and getter for all of them, that way the user can do:
-        //thing.x = 9908, and it will auto calculate all the new values for everything.
-        //They could set thing.left, thing.right, etc and it would calculate everything else.
-        // well it would speed the engine up ig
-        //I was thinking it would make it slightly slower?
-        //WHich is faster? a setter function and a getter function or  this.x=8 and recalculate it every time. true. Wanna add it?  
-        //Yes, but think about how much easier it would be if the user could simply set any value on the Thing, and everything would automatically adjust.
-        //No, if I do ball.left = 60, it will just break the program, because if in our update loop we updated that, it would loop and not work.
-        //But, if it could be modifyied, that would make it so much easier instead of ball.x = ball.x - this.left.
-        //I feel like this way would be easier for the user....
-        //btw, I originally set coords to center because it made it easier to draw circles.
-        //And it would make it a lot more efficient than adding functions everywhere.
-        // ima  finish fonts
-        //ok, fine.ok
-        parent.context.textAlign = this.align;
-        parent.context.font = `${this.size}px ${this.font}`;
+        game.context.textAlign = this.align;
+        game.context.font = `${this.size}px ${this.font}`;
         if (this.background && this.background != 'transparent') {
-            parent.context.fillStyle = this.background;
-            parent.context.fillRect(parent.width/2+this.left, parent.height/2+this.top, this.width, this.height);
+            game.context.fillStyle = this.background;
+            game.context.fillRect(game.width/2+this.left, game.height/2+this.top, this.width, this.height);
         }
-        parent.context.fillStyle = this.color;
-        parent.context.fillText(this.text, parent.width/2+this.left, parent.height/2+this.top+this.size);
+        game.context.fillStyle = this.color;
+        game.context.fillText(this.text, game.width/2+this.left, game.height/2+this.top+this.size);
     }
 };

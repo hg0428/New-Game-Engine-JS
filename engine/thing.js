@@ -32,11 +32,11 @@ this.Thing = class {
 
     width = width || radius * 2 || null;
     if (!width && ((left && right) || (left && x) || (right && x))) {
-      width = parent.numberDistance(right, left) || parent.numberDistance(x, left) * 2 || parent.numberDistance(right, x) * 2;
+      width = game.numberDistance(right, left) || game.numberDistance(x, left) * 2 || game.numberDistance(right, x) * 2;
     } else if (!width) width = 20;
     height = height || radius * 2 || null;
     if (!width && ((top && bottom) || (top && y) || (bottom && y))) {
-      height = parent.numberDistance(top, bottom) || parent.numberDistance(y, top) * 2 || parent.numberDistance(bottom, y) * 2;
+      height = game.numberDistance(top, bottom) || game.numberDistance(y, top) * 2 || game.numberDistance(bottom, y) * 2;
     } else if (!height) height = 20;
     radius = radius || (width + height) / 4 || 10;
     x = x || (left + width / 2) || (right - width / 2) || 0;
@@ -57,12 +57,12 @@ this.Thing = class {
       right: right,
     }
     this._real = {
-      x: x + parent.width / 2,
-      y: y + parent.height / 2,
-      left: left + parent.width / 2,
-      right: right + parent.width / 2,
-      top: top + parent.height / 2,
-      bottom: bottom + parent.height / 2,
+      x: x + game.width / 2,
+      y: y + game.height / 2,
+      left: left + game.width / 2,
+      right: right + game.width / 2,
+      top: top + game.height / 2,
+      bottom: bottom + game.height / 2,
     }
     this.id = Random.string(12) + this.name;
     if (typeof background == 'function') {
@@ -77,8 +77,6 @@ this.Thing = class {
     }
     //add this.colourScheme alias.
     //this.visible = false;
-    this.realX = 0;
-    this.realY = 0;
     this.checkCollisions = collisions ?? true;
     this.collisions = {};
     this.events = {};
@@ -90,7 +88,7 @@ this.Thing = class {
       //add rotational velocity? (my old engine had it.)
     }
     this._destination = null;
-    parent.things.push(this);
+    game.viewport.appendChild(this);
   }
   get x() {
     return this._data.x;
@@ -99,10 +97,9 @@ this.Thing = class {
     this._data.x = val;
     this._data.left = val - this._data.width / 2;
     this._data.right = val + this._data.width / 2;
-    this._real.x = val + parent.width / 2;
-    this._real.left = this._data.left + parent.width / 2;
-    this._real.right = this._data.right + parent.width / 2;
-
+    this._real.x = val + game.width / 2;
+    this._real.left = this._data.left + game.width / 2;
+    this._real.right = this._data.right + game.width / 2;
   }
   get y() {
     return this._data.y;
@@ -111,9 +108,9 @@ this.Thing = class {
     this._data.y = val;
     this._data.top = val - this._data.height / 2;
     this._data.bottom = val + this._data.height / 2;
-    this._real.y = val + parent.height / 2;
-    this._real.top = this._data.top + parent.height / 2;
-    this._real.bottom = this._data.bottom + parent.height / 2;
+    this._real.y = val + game.height / 2;
+    this._real.top = this._data.top + game.height / 2;
+    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get left() {
     return this._data.left;
@@ -122,9 +119,9 @@ this.Thing = class {
     this._data.left = val;
     this._data.x = val + this._data.width / 2;
     this._data.right = val + this._data.width;
-    this._real.x = this._data.x + parent.width / 2;
-    this._real.left = val + parent.width / 2;
-    this._real.right = this._data.right + parent.width / 2;
+    this._real.x = this._data.x + game.width / 2;
+    this._real.left = val + game.width / 2;
+    this._real.right = this._data.right + game.width / 2;
   }
   get top() {
     return this._data.top;
@@ -133,9 +130,9 @@ this.Thing = class {
     this._data.top = val;
     this._data.y = val + this._data.height / 2;
     this._data.bottom = val + this._data.height;
-    this._real.y = this._data.y + parent.height / 2;
-    this._real.top = val + parent.height / 2;
-    this._real.bottom = this._data.bottom + parent.height / 2;
+    this._real.y = this._data.y + game.height / 2;
+    this._real.top = val + game.height / 2;
+    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get right() {
     return this._data.right;
@@ -144,9 +141,9 @@ this.Thing = class {
     this._data.right = val;
     this._data.x = val - this._data.width / 2;
     this._data.left = val - this._data.width;
-    this._real.x = this._data.x + parent.width / 2;
-    this._real.left = this._data.left + parent.width / 2;
-    this._real.right = val + parent.width / 2;
+    this._real.x = this._data.x + game.width / 2;
+    this._real.left = this._data.left + game.width / 2;
+    this._real.right = val + game.width / 2;
   }
   get bottom() {
     return this._data.bottom;
@@ -155,9 +152,9 @@ this.Thing = class {
     this._data.bottom = val;
     this._data.y = val - this._data.height / 2;
     this._data.top = val - this._data.height;
-    this._real.y = this._data.y + parent.height / 2;
-    this._real.top = this._data.top + parent.height / 2;
-    this._real.bottom = val + parent.height / 2;
+    this._real.y = this._data.y + game.height / 2;
+    this._real.top = this._data.top + game.height / 2;
+    this._real.bottom = val + game.height / 2;
   }
   get width() {
     return this._data.width;
@@ -166,8 +163,8 @@ this.Thing = class {
     this._data.width = val;
     this._data.left = this._data.x - val / 2;
     this._data.right = this._data.x + val / 2;
-    this._real.left = this._data.left + parent.width / 2;
-    this._real.right = this._data.right + parent.width / 2;
+    this._real.left = this._data.left + game.width / 2;
+    this._real.right = this._data.right + game.width / 2;
   }
   get height() {
     return this._data.height;
@@ -176,8 +173,8 @@ this.Thing = class {
     this._data.height = val;
     this._data.top = this._data.y - val / 2;
     this._data.bottom = this._data.y + val / 2;
-    this._real.top = this._data.top + parent.height / 2;
-    this._real.bottom = this._data.bottom + parent.height / 2;
+    this._real.top = this._data.top + game.height / 2;
+    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get radius() {
     return this._data.radius;
@@ -190,10 +187,10 @@ this.Thing = class {
     this._data.right = this._data.x + val;
     this._data.top = this._data.y - val;
     this._data.bottom = this._data.y + val;
-    this._real.left = this._data.left + parent.width / 2;
-    this._real.right = this._data.right + parent.width / 2;
-    this._real.top = this._data.top + parent.height / 2;
-    this._real.bottom = this._data.bottom + parent.height / 2;
+    this._real.left = this._data.left + game.width / 2;
+    this._real.right = this._data.right + game.width / 2;
+    this._real.top = this._data.top + game.height / 2;
+    this._real.bottom = this._data.bottom + game.height / 2;
   }
 
 
@@ -202,7 +199,7 @@ this.Thing = class {
       return 
   }*/
   delete() {
-    parent.things = parent.things.filter(x => x !== this);
+    game.things = game.things.filter(x => x !== this);
     this.draw = () => null;
     delete this.x, this.y, this.width, this.height, this.radius, this.left, this.right, this.top, this.bottom, this._data, this.triggerEvent;
     for (let thing of game.things) {
@@ -263,15 +260,6 @@ this.Thing = class {
   triggerEvent(name) {
     if (this.events[name])
       for (let cb of this.events[name]) cb()
-  }
-
-  posUpdate() {
-    this.realX = this._data.left + (parent.width / 2);
-    this.realY = this._data.top + (parent.height / 2);
-    if (!this.overhead) {
-      this.realX += parent.camera.offsetX;
-      this.realY += parent.camera.offsetY;
-    }
   }
 
   distanceTo(other) {
@@ -342,7 +330,7 @@ this.Thing = class {
           side: side,
           self: this,
           other: other,
-          timestamp: parent.timestamp
+          timestamp: game.timestamp
         }
         return event;
       }
@@ -353,7 +341,7 @@ this.Thing = class {
 
     this.prevX = this.x;
     this.prevY = this.y;
-    this.move(this.vel.x * parent.deltaTime, this.vel.y * parent.deltaTime)
+    this.move(this.vel.x * game.deltaTime, this.vel.y * game.deltaTime)
     /*
     Problems with our Collision Detection: 
         1. Its very expensive to check every object against every other object even if they are a thousand pixels away. 
@@ -363,7 +351,7 @@ this.Thing = class {
         1. A broad phase where we decide which ones to check by if their y positions overlap at all. Or some other type of broad phase.
         2. Draw a line between the current position and projected position and check if that line intersects with the object. Or some other solution
     */
-    for (let other of parent.things.filter(x => {
+    for (let other of game.things.filter(x => {
       // Check if the object is not itself
       return x.id !== this.id && x.checkCollisions && x._exists === true
     })) { //if this thing checks another thing, and the other thing checks against this thing, than isn't that re-calculating the same thing? Its a waste of time. So, maybe later we can come up with a better system.
@@ -376,16 +364,16 @@ this.Thing = class {
   draw() {
     this.update();
 
-    this.triggerEvent("moved");
-    this.posUpdate();
-    parent.context.save();
+    this.triggerEvent("draw");
+    game.context.save();
     if (this.image) {
-      parent.context.drawImage(this.image, this.realX, this.realY, this.width, this.height);
+      game.context.drawImage(this.image, this._real.left, this._real.top, this.width, this.height);
     } else {
-      this.shape(parent.context, this);
-      this.colorScheme.draw(parent.context, this);
+      this.shape(game.context, this);
+      this.colorScheme.draw(game.context, this);
     }
-    parent.context.restore();
+    game.context.restore();
+    this.triggerEvent("afterDraw");
     if (this._destination) {
       if ((this._destination[0] == '*' || this._destination[0] == this._data.x) && (this._destination[1] == '*' || this._destination[1] == this._data.y)) {
         this._destination = null;
@@ -416,12 +404,12 @@ this.Thing = class {
     this._data.top = y - this._data.height / 2;
     this._data.bottom = y + this._data.height / 2;
     
-    this._real.x = x + parent.width/2;
-    this._real.left = x - this._data.width / 2+ parent.width/2;
-    this._real.right = x + this._data.width / 2 + parent.width/2;
-    this._real.y = y + parent.height/2;
-    this._real.top = y - this._data.height / 2 + parent.height/2;
-    this._real.bottom = y + this._data.height / 2 + parent.height/2;
+    this._real.x = x + game.width/2;
+    this._real.left = x - this._data.width / 2+ game.width/2;
+    this._real.right = x + this._data.width / 2 + game.width/2;
+    this._real.y = y + game.height/2;
+    this._real.top = y - this._data.height / 2 + game.height/2;
+    this._real.bottom = y + this._data.height / 2 + game.height/2;
   }
   moveX(amt) {
     this._data.x += amt;

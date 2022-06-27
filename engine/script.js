@@ -94,8 +94,6 @@ class Game {
   constructor(opts = {}) {
     this.custom = opts.custom || {}; //for people to store custom values
     this.camera = new Camera();
-    this.things = [];
-    this.texts = [];
     this.FPS = 0;
     this.deltaTime = 0;
     this.timestamp = 0;
@@ -120,8 +118,9 @@ class Game {
     this.hooks = [];
     this._sprites = {};
     this.running = false;
-    const parent = this;
+    const game = this;
     /* import {{container.js}} */
+    this.viewport = new this.Container(this);
     /* import {{text.js}} */
     /* import {{thing.js}} */
   }
@@ -239,10 +238,7 @@ class Game {
       //Implement camera rotation (text+thing), remember camera can not affect it if overhead is set to true.
       //ctx.translate(camera.cen)
       //ctx.rotate(45 * Math.PI / 180);
-      for (let thing of self.things)
-        thing.draw(elapsed);
-      for (let text of self.texts)
-        text.draw(elapsed);
+      this.viewport.draw(elapsed);
       if (self.running) window.requestAnimationFrame(gameLoop);
     }
 
