@@ -9,7 +9,8 @@ this.Text = class {
         bottom,
         custom,
         ...opts
-        } = {}) {
+        } = {}, parent) {
+        this.parent = parent || game.viewport;
         this.custom = custom || {}; //for people to store custom values
         this.size = opts.size || 16;
         this.text = text || 'Hello World';
@@ -32,7 +33,9 @@ this.Text = class {
         }
         this.font = opts.font || "Arial";
         this.align = opts.align || "left";
-        game.viewport.appendChild(this);
+        game.all.all.push(this);
+        game.all.texts.push(this);
+        this.parent.appendChild(this);
     }
     get text() {
         return this._text;

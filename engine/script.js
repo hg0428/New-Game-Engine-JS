@@ -117,6 +117,12 @@ class Game {
     this.friction = opts.friction || 1;
     this.hooks = [];
     this._sprites = {};
+    this.all = {
+      all:[],
+      things:[],
+      texts:[],
+      containers:[]
+    }
     this.running = false;
     const game = this;
     /* import {{container.js}} */
@@ -138,7 +144,6 @@ class Game {
       height = height || image.naturalHeight;
       x = x || 0;
       y = y || 0;
-      console.log(width, height, x, y)
       parent._sprites[name] = {
         img: image,
         source: {
@@ -238,7 +243,7 @@ class Game {
       //Implement camera rotation (text+thing), remember camera can not affect it if overhead is set to true.
       //ctx.translate(camera.cen)
       //ctx.rotate(45 * Math.PI / 180);
-      this.viewport.draw(elapsed);
+      self.viewport.draw(elapsed);
       if (self.running) window.requestAnimationFrame(gameLoop);
     }
 

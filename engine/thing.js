@@ -19,8 +19,9 @@ this.Thing = class {
     borderWidth,
     custom,
     ...opts
-  } = {}) {
+  } = {}, parent) {
     //add something to auto keep a Thing within the viewport
+    this.parent = parent || game.viewport;
     this.custom = custom || {}; //for people to store custom values
     this._exists = true;
     this.image = opts.image;
@@ -56,14 +57,7 @@ this.Thing = class {
       bottom: bottom,
       right: right,
     }
-    this._real = {
-      x: x + game.width / 2,
-      y: y + game.height / 2,
-      left: left + game.width / 2,
-      right: right + game.width / 2,
-      top: top + game.height / 2,
-      bottom: bottom + game.height / 2,
-    }
+    this.calculatePositions();
     this.id = Random.string(12) + this.name;
     if (typeof background == 'function') {
       this.colorScheme = { draw: background };
@@ -88,7 +82,9 @@ this.Thing = class {
       //add rotational velocity? (my old engine had it.)
     }
     this._destination = null;
-    game.viewport.appendChild(this);
+    game.all.all.push(this);
+    game.all.things.push(this);
+    this.parent.appendChild(this);
   }
   get x() {
     return this._data.x;
@@ -97,9 +93,6 @@ this.Thing = class {
     this._data.x = val;
     this._data.left = val - this._data.width / 2;
     this._data.right = val + this._data.width / 2;
-    this._real.x = val + game.width / 2;
-    this._real.left = this._data.left + game.width / 2;
-    this._real.right = this._data.right + game.width / 2;
   }
   get y() {
     return this._data.y;
@@ -108,9 +101,6 @@ this.Thing = class {
     this._data.y = val;
     this._data.top = val - this._data.height / 2;
     this._data.bottom = val + this._data.height / 2;
-    this._real.y = val + game.height / 2;
-    this._real.top = this._data.top + game.height / 2;
-    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get left() {
     return this._data.left;
@@ -119,9 +109,6 @@ this.Thing = class {
     this._data.left = val;
     this._data.x = val + this._data.width / 2;
     this._data.right = val + this._data.width;
-    this._real.x = this._data.x + game.width / 2;
-    this._real.left = val + game.width / 2;
-    this._real.right = this._data.right + game.width / 2;
   }
   get top() {
     return this._data.top;
@@ -130,9 +117,6 @@ this.Thing = class {
     this._data.top = val;
     this._data.y = val + this._data.height / 2;
     this._data.bottom = val + this._data.height;
-    this._real.y = this._data.y + game.height / 2;
-    this._real.top = val + game.height / 2;
-    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get right() {
     return this._data.right;
@@ -141,9 +125,6 @@ this.Thing = class {
     this._data.right = val;
     this._data.x = val - this._data.width / 2;
     this._data.left = val - this._data.width;
-    this._real.x = this._data.x + game.width / 2;
-    this._real.left = this._data.left + game.width / 2;
-    this._real.right = val + game.width / 2;
   }
   get bottom() {
     return this._data.bottom;
@@ -152,9 +133,6 @@ this.Thing = class {
     this._data.bottom = val;
     this._data.y = val - this._data.height / 2;
     this._data.top = val - this._data.height;
-    this._real.y = this._data.y + game.height / 2;
-    this._real.top = this._data.top + game.height / 2;
-    this._real.bottom = val + game.height / 2;
   }
   get width() {
     return this._data.width;
@@ -163,8 +141,6 @@ this.Thing = class {
     this._data.width = val;
     this._data.left = this._data.x - val / 2;
     this._data.right = this._data.x + val / 2;
-    this._real.left = this._data.left + game.width / 2;
-    this._real.right = this._data.right + game.width / 2;
   }
   get height() {
     return this._data.height;
@@ -173,8 +149,6 @@ this.Thing = class {
     this._data.height = val;
     this._data.top = this._data.y - val / 2;
     this._data.bottom = this._data.y + val / 2;
-    this._real.top = this._data.top + game.height / 2;
-    this._real.bottom = this._data.bottom + game.height / 2;
   }
   get radius() {
     return this._data.radius;
@@ -187,10 +161,6 @@ this.Thing = class {
     this._data.right = this._data.x + val;
     this._data.top = this._data.y - val;
     this._data.bottom = this._data.y + val;
-    this._real.left = this._data.left + game.width / 2;
-    this._real.right = this._data.right + game.width / 2;
-    this._real.top = this._data.top + game.height / 2;
-    this._real.bottom = this._data.bottom + game.height / 2;
   }
 
 
@@ -199,10 +169,10 @@ this.Thing = class {
       return 
   }*/
   delete() {
-    game.things = game.things.filter(x => x !== this);
+    this.parent.removeChild(this)
     this.draw = () => null;
     delete this.x, this.y, this.width, this.height, this.radius, this.left, this.right, this.top, this.bottom, this._data, this.triggerEvent;
-    for (let thing of game.things) {
+    for (let thing of game.all.things) {
       thing._removeCollisions(this.id);
     }
     this._exists = false;
@@ -351,7 +321,7 @@ this.Thing = class {
         1. A broad phase where we decide which ones to check by if their y positions overlap at all. Or some other type of broad phase.
         2. Draw a line between the current position and projected position and check if that line intersects with the object. Or some other solution
     */
-    for (let other of game.things.filter(x => {
+    for (let other of game.all.things.filter(x => {
       // Check if the object is not itself
       return x.id !== this.id && x.checkCollisions && x._exists === true
     })) { //if this thing checks another thing, and the other thing checks against this thing, than isn't that re-calculating the same thing? Its a waste of time. So, maybe later we can come up with a better system.
@@ -360,10 +330,19 @@ this.Thing = class {
         this.collisions[other.id].forEach(cb => cb(event.axis, event.side, this, other));
     }
   }
-
+  calculatePositions() {
+    this._real = {
+      x: this._data.x + game.width / 2 + this.parent.absolute.left,
+      y: this._data.y + game.height / 2 + this.parent.absolute.top,
+      left: this._data.left + game.width / 2 + this.parent.absolute.left,
+      right: this._data.right + game.width / 2 + this.parent.absolute.left,
+      top: this._data.top + game.height / 2 + this.parent.absolute.top,
+      bottom: this._data.bottom + game.height / 2 + this.parent.absolute.top,
+    }
+  }
   draw() {
     this.update();
-
+    this.calculatePositions();
     this.triggerEvent("draw");
     game.context.save();
     if (this.image) {
@@ -403,29 +382,16 @@ this.Thing = class {
     this._data.y = y;
     this._data.top = y - this._data.height / 2;
     this._data.bottom = y + this._data.height / 2;
-    
-    this._real.x = x + game.width/2;
-    this._real.left = x - this._data.width / 2+ game.width/2;
-    this._real.right = x + this._data.width / 2 + game.width/2;
-    this._real.y = y + game.height/2;
-    this._real.top = y - this._data.height / 2 + game.height/2;
-    this._real.bottom = y + this._data.height / 2 + game.height/2;
   }
   moveX(amt) {
     this._data.x += amt;
     this._data.left += amt;
     this._data.right += amt;
-    this._real.x += amt;
-    this._real.left += amt;
-    this._real.right += amt;
   }
   moveY(amt) {
     this._data.y += amt;
     this._data.top += amt;
     this._data.bottom += amt;
-    this._real.y += amt;
-    this._real.top += amt;
-    this._real.bottom += amt;
   }
   move(x, y) {
     this._data.x += x;
@@ -434,12 +400,6 @@ this.Thing = class {
     this._data.y += y;
     this._data.top += y;
     this._data.bottom += y;
-    this._real.x += x;
-    this._real.left += x;
-    this._real.right += x;
-    this._real.y += y;
-    this._real.top += y;
-    this._real.bottom += y;
   }
   to(x, y, speedX, speedY) {
     if (x == '*') speedX = 0;
