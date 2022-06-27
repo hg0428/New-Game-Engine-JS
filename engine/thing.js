@@ -65,12 +65,16 @@ this.Thing = class {
       bottom: bottom + parent.height / 2,
     }
     this.id = Random.string(12) + this.name;
-    this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({
-      background, border: {
-        style: border,
-        width: borderWidth
-      }
-    });
+    if (typeof background == 'function') {
+      this.colorScheme = { draw: background };
+    } else {
+      this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({
+        background, border: {
+          style: border,
+          width: borderWidth
+        }
+      });
+    }
     //add this.colourScheme alias.
     //this.visible = false;
     this.realX = 0;
@@ -374,12 +378,14 @@ this.Thing = class {
 
     this.triggerEvent("moved");
     this.posUpdate();
+    parent.context.save();
     if (this.image) {
       parent.context.drawImage(this.image, this.realX, this.realY, this.width, this.height);
     } else {
       this.shape(parent.context, this);
-      this.colorScheme.draw(parent.context);
+      this.colorScheme.draw(parent.context, this);
     }
+    parent.context.restore();
     if (this._destination) {
       if ((this._destination[0] == '*' || this._destination[0] == this._data.x) && (this._destination[1] == '*' || this._destination[1] == this._data.y)) {
         this._destination = null;

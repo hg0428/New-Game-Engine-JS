@@ -139,6 +139,7 @@ class Game {
       height = height || image.naturalHeight;
       x = x || 0;
       y = y || 0;
+      console.log(width, height, x, y)
       parent._sprites[name] = {
         img: image,
         source: {

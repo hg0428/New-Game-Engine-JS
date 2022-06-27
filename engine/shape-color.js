@@ -2,44 +2,51 @@ const SHAPES = {
   rect: function(ctx, thing) {
     ctx.beginPath();
     ctx.rect(thing._real.left, thing._real.top, thing.width, thing.height);
-    ctx.closePath();
   },
   circle: function(ctx, thing) {
     ctx.beginPath();
     ctx.arc(thing._real.x, thing._real.y, thing.radius, 2 * Math.PI, false);
-    ctx.closePath();
   },
   Rect() {
     return (ctx, thing) => {
       ctx.beginPath();
       ctx.rect(thing._real.left, thing._real.top, thing.width, thing.height);
-      ctx.closePath();
     }
   },
   Ellipse(startAngle = 0, endAngle = 2 * Math.PI) {
     return (ctx, thing) => {
       ctx.beginPath();
       ctx.ellipse(thing._real.x, thing._real.y, thing.width, thing.height, thing.rotation, startAngle, endAngle)
-      ctx.closePath();
     }
   },
   Circle() {
     return (ctx, thing) => {
       ctx.beginPath();
       ctx.arc(thing._real.x, thing._real.y, thing.radius, 2 * Math.PI, false);
-      ctx.closePath();
     }
   },
 }
-function Sprite(name) {
+function Sprite(name, clip = {}, fillRule = "nonzero") {
+  //allow cliping a shape
   let sprite = game._sprites[name];
   function draw(ctx, thing) {
+    ctx.clip(fillRule);
     if (!sprite) sprite = game._sprites[name];
     //^^To give the image time to load.
-    ctx.drawImage(sprite.img, thing._real.left, thing._real.top, thing.width, thing.height, sprite.source.x, sprite.source.y, sprite.source.width, sprite.source.height);
+    //ctx.fillStyle = 'red';
+    //ctx.fillRect(0, 0, 50, 50);
+    ctx.drawImage(sprite.img, sprite.source.x, sprite.source.y, sprite.source.width, sprite.source.height, clip.x || 0, clip.y || 0, clip.width || thing.width, clip.Height || thing.height);
   }
-  return draw;
+  return draw;//DOESN'T WORK
 }
+/*
+ctx.save();
+ctx.beginPath();
+ctx.arc(50, 50, 20, 2 * Math.PI, false);
+ctx.clip('nonzero');
+ctx.drawImage(sprite.img, 0, 0, 40, 40);
+ctx.restore();
+ */
 class ColorScheme {
   constructor({
     background,
@@ -75,6 +82,7 @@ class ColorScheme {
     this.fill.style = val;
   }
   draw(context) {
+    context.closePath();
     context.strokeStyle = this.border.style;
     context.lineWidth = this.border.width;
     if (this.border.width > 0)
@@ -84,7 +92,7 @@ class ColorScheme {
     context.fill(this.fill.rule);
     //yes, the thing runs it on its.draw after it runs the shape. Shape makes the path, ColorScheme colors it in.
     //Its currently only a very basic implementation. but its all working, and you can use game.Pattern to get an image.
-    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^.
     // Will you make a game with the engine for kajam?
     //Yes.
     //And I may later on port the engine over to some other languages.

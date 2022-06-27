@@ -37,6 +37,7 @@ const paddle = new game.Thing({
 const ball = new game.Thing({
   shape: SHAPES.Circle(),
   background: Sprite('bat'),
+  radius: 20,
 });
 
 function getColorFromY(y) {
