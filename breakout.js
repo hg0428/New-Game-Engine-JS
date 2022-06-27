@@ -5,11 +5,12 @@ const game = new Game({
 });
 //The border is only on the paddle, but for some reason it shows up on everything.
 //let something = new game.Text();
+game.loadSprite('bat', 'bat.png');
 new game.Thing({
   x:0,
   y:0,
-  height:game.height,
-  width:2,
+  height: game.height,
+  width: 2,
   background: 'yellow'
 })
 new game.Thing({
@@ -34,8 +35,8 @@ const paddle = new game.Thing({
 });
 
 const ball = new game.Thing({
-  shape: SHAPES.circle,
-  background: "white",
+  shape: SHAPES.Circle(),
+  background: Sprite('bat'),
 });
 
 function getColorFromY(y) {
@@ -77,10 +78,6 @@ function reset() {
 reset();
 
 paddle.collided(ball, (axis, side) => {
-  if (axis === "y") 
-    ball.vel.y = -ball.vel.y
-  else
-    ball.vel.x = -ball.vel.x
   switch (side) {
     case 'left':
       ball.left = paddle.right;
@@ -88,12 +85,12 @@ paddle.collided(ball, (axis, side) => {
     case 'right': 
       ball.right = paddle.left; // when the ball hits the side of paddle it teleports up not for me
 	    ball.vel.x = ball.vel.x > 0 ? -ball.vel.x : ball.vel.x;// not for me  hm ok
-    case 'top'://screentime up, bye.
-      ball.top = paddle.bottom; // cya
-      ball.vel.y = Math.abs(ball.vel.y)
-    case 'bottom': // It cant really hit the bottom of the paddle
+    case 'top':
+      ball.top = paddle.bottom;
+      ball.vel.y = Math.abs(ball.vel.y);
+    case 'bottom':
       ball.bottom = paddle.top;
-      ball.vel.y = ball.vel.y > 0 ? -ball.vel.y : ball.vel.y; 
+      ball.vel.y = -Math.abs(ball.vel.y);
   }
 });
 
