@@ -169,6 +169,8 @@ this.Thing = class {
       return 
   }*/
   delete() {
+    game.all.things = game.all.things.filter(i => i !== this);
+    game.all.all = game.all.all.filter(i => i !== this);
     this.parent.removeChild(this)
     this.draw = () => null;
     delete this.x, this.y, this.width, this.height, this.radius, this.left, this.right, this.top, this.bottom, this._data, this.triggerEvent;
