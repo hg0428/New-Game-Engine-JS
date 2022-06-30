@@ -335,6 +335,8 @@ this.Thing = class {
     }
   }
   calculatePositions() {
+    if (this.y === NaN) this.y = 0;
+    if (this.x === NaN) this.x = 0;
     this._real = {
       x: this._data.x + game.width / 2 + this.parent.absolute.left,
       y: this._data.y + game.height / 2 + this.parent.absolute.top,
