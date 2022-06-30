@@ -415,9 +415,9 @@ this.Thing = class {
 
     this._destination = [x, y];
 
-    if (x > this._data.x) this.vel.x = speedX;
-    else this.vel.x = -speedX;
-    if (y > this._data.y) this.vel.y = speedY;
-    else this.vel.y = -speedY;
+    if (x > this._data.x && x !== '*') this.vel.x = speedX;
+    else if (x !== '*')this.vel.x = -speedX;
+    if (y > this._data.y && y !== '*') this.vel.y = speedY;
+    else if (y !== '*') this.vel.y = -speedY;
   }
 }
