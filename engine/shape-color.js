@@ -38,6 +38,9 @@ function Sprite(name, clip = {}, fillRule = "nonzero") {
       ctx.clip(fillRule);
 		  ctx.drawImage(sprite.img, thing._real.left, thing._real.top, thing.width, thing.height);
 		  ctx.closePath();
+    } else {
+      ctx.fillStyle = 'darkgrey';
+      ctx.fillRect(thing._real.left, thing._real.top, thing.width, thing.height);
     }
 		// bruh
   //Yes, shape-color has shape in the name. So, it has colorSheme and shapes... I feel like its decently organized for the amount and complexity of code we have.
