@@ -34,36 +34,11 @@ function Sprite(name, clip = {}, fillRule = "nonzero") {
     //throw new Error('Here');
     //WORKS NOW
     if (!sprite) sprite = game._sprites[name];
-    //^^To give the image time to load.
-
-		// If clip doesnt work that means something is wrong with the current path
-		// yep
-		
-		//The path works because other shapes draw fine.
-    //Moving Circle code here doesn't help...
-    // only thing that makes this not work is ctx.clip
-		// but why are the shapes gray?
-    //What shapes?
-    //No, its not that... Because it has the same problem when I tried to fill the clip with a blue rect. ie, replacing drawImage with fillRect.
-    //So far, thats the only problem we haven't ruled out. 
-		// so without clip it works
-    //The images draw fine, and the path works (tested by attempting to call ctx.fill, .stroke)
-		
-		// fixed <---
-    //How? How? How? How? How?
-		ctx.clip(fillRule);
-    //nope, didn't help what didn't?
-    //yes, what is wrong with ctx.clip?
-    //I already tried drawing a rect in the clip, it does the same.
-    //From canvas's top left?
-    //thing._real.left, thing._real.top
-		// How to get the thing's coords?
-		ctx.drawImage(sprite.img, thing._real.left, thing._real.top, thing.width, thing.height) // sheesh sorry...
-    //I'm just curious
-		//ctx.drawImage(sprite.img, sprite.source.x, sprite.source.y, sprite.source.width, sprite.source.height, clip.x || 0, clip.y || 0, clip.width || thing.width, clip.height || thing.height);
-    //ctx.fillStyle = 'red';
-    //ctx.fillRect(0, 0, 50, 50);
-		ctx.closePath() // idk the code is pretty all around the place
+    if (sprite) {
+      ctx.clip(fillRule);
+		  ctx.drawImage(sprite.img, thing._real.left, thing._real.top, thing.width, thing.height);
+		  ctx.closePath();
+    }
 		// bruh
   //Yes, shape-color has shape in the name. So, it has colorSheme and shapes... I feel like its decently organized for the amount and complexity of code we have.
   } // no you made something that already does this in thing.js, see what I mean
