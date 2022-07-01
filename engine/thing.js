@@ -261,10 +261,10 @@ this.Thing = class {
       rectCollide(rectCollider, rectCollider2)
     ) { //Change ._data.etc to .etc when we change getCollider() again.
 
-      // Calculate the distance between centers
-      let diffX = this._data.x - other._data.x;
-      let diffY = this._data.y - other._data.y;
-
+      let diffX = game.numberDistance(this._data.x, other._data.x);
+      let diffY = game.numberDistance(this._data.y, other._data.y);
+      if (this._data.x < other._data.x) diffX = -diffX;
+      if (this._data.y < other._data.y) diffY = -diffY;
       // Calculate the minimum distance to separate along X and Y
       let minXDist = t1HalfW + t2HalfW;
       let minYDist = t1HalfH + t2HalfH;
