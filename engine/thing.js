@@ -208,7 +208,7 @@ this.Thing = class {
   }
 
   collided(other, cb) {
-    if (!Array.isArray(other)) {
+    if (!isIterable(other)) {
       if (!this.collisions[other.id]) this.collisions[other.id] = []
       this.collisions[other.id].push(cb)
     } else {

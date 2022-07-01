@@ -28,6 +28,12 @@ Things to add:
 /* import {{shape-color.js}} */
 /* import {{camera.js}} */
 //COMPILE.PY turns the above into the contents of that file.
+function isIterable(obj) {
+  if (obj == null) {
+    return false;
+  }
+  return typeof obj[Symbol.iterator] === 'function';
+}
 function rectCollide(t1, t2) {
   return (t1.left <= t2.right &&
     t1.right >= t2.left &&
