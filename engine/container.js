@@ -64,8 +64,8 @@ this.Container = class {
     //When drawing, make sure to take the parent's posisition into account.
     this.children = [];
     this.events = [];
-    this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({
-      background, border: {
+    background = background || 'transparent';
+    this.colorScheme = colorScheme ?? colourScheme ?? new ColorScheme({background, border: {
         style: border,
         width: borderWidth
       }

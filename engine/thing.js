@@ -420,4 +420,23 @@ this.Thing = class {
     if (y > this._data.y && y !== '*') this.vel.y = speedY;
     else if (y !== '*') this.vel.y = -speedY;
   }
+  stop() {
+    this.vel.x = 0;
+    this.vel.y = 0;
+    this._destination = null;
+  }
+  stopX() {
+    this.vel.x = 0;
+    this._destination[0] = '*';
+  }
+  stopY() {
+    this.vel.y = 0;
+    this._destination[1] = '*';
+  }
+  reflectX() {
+    this.vel.x = -this.vel.x;
+  }
+  reflectY() {
+    this.vel.y = -this.vel.y;
+  }
 }
