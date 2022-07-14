@@ -425,7 +425,7 @@ this.Thing = class {
     this.vel.y = 0;
     this._destination = null;
   }
-  stopX() {
+  stopX() { 
     this.vel.x = 0;
     this._destination[0] = '*';
   }
